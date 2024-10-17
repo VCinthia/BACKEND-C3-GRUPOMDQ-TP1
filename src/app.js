@@ -11,7 +11,27 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
+
+//VER SI HAY QUE CAMBIARLO PARA RENDERIZAR EN EL NAVEGADOR
+app.listen(3000, function () {
+});
+
+app.get('/', function (req, res) {
+  res.render('index');
+});
+
+app.get('/main', function (req, res) {
+  res.render('main');
+});
+
+app.get('/newReservation', function (req, res) {
+  res.render('newReservation');
+});
+
+app.get('/reservationList', function (req, res) {
+  res.render('reservationList');
+});
 
 app.use(logger('dev'));
 app.use(express.json());
