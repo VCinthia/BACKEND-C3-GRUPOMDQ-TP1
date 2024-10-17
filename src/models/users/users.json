@@ -1,0 +1,30 @@
+[
+  {
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "mail": "juan.perez@example.com",
+    "rol": "Cliente",
+    "contraseña": "juanperez"
+  },
+  {
+      "nombre": "Ana",
+      "apellido": "García",
+      "mail": "ana.garcia@example.com",
+      "rol": "Cliente",
+      "contraseña": "anagarcia"
+  },
+  {
+      "nombre": "Carlos",
+      "apellido": "Rodríguez",
+      "mail": "carlos.rodriguez@example.com",
+      "rol": "Personal",
+      "contraseña": "carlosrodriguez"
+  },    
+  {
+    "nombre": "María",
+    "apellido": "López",
+    "mail": "maria.lopez@example.com",
+    "rol": "Personal",
+    "contraseña": "marialopez"
+  }
+]
