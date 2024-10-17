@@ -44,3 +44,6 @@ Views //Mati
 
 
 
+Para correr proyecto:
+
+npx nodemon src/app.js
