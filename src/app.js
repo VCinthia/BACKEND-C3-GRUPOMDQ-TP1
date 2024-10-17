@@ -9,6 +9,9 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+//lo coloqué antes de las rutas y cambié a true para que se pueda enviar el form del login
+app.use(express.urlencoded({ extended: true }));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -33,11 +36,20 @@ app.get('/reservationList', function (req, res) {
   res.render('reservationList');
 });
 
+
+//lo agregué para probar si funciona el login (Mati)
+app.post('/main', (req, res) => {
+    const { username, password } = req.body;
+    // validación de credenciales y condicional
+    
+    res.render('main');
+});
+
+
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

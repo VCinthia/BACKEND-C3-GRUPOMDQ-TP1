@@ -1,0 +1,40 @@
+doctype html
+html
+    head
+        title Lista de Reservas
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        h1 Lista de Reservas
+        table
+            thead
+                tr
+                    th Nombre del Cliente
+                    th Fecha
+                    th Hora
+                    th Número de Mesa
+                    th Estado
+                    th Comentarios
+                    th Acciones
+            tbody
+                tr
+                    td Juan Pérez
+                    td 2024-10-20
+                    td 19:00
+                    td 5
+                    td Pendiente
+                    td Este es un comentario.
+                    td
+                        button(type='button', onclick='confirmarReserva(1)').btnConfirm Confirmar
+                        button(type='button', onclick='eliminarReserva(1)').btnDelete Eliminar
+                tr
+                    td María López
+                    td 2024-10-21
+                    td 20:00
+                    td 3
+                    td Pendiente
+                    td Sin comentarios.
+                    td
+                        button(type='button', onclick='confirmarReserva(2)').btnConfirm Confirmar
+                        button(type='button', onclick='eliminarReserva(2)').btnDelete Eliminar
+        
+        button(onclick="location.href='/main'") Volver 

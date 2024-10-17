@@ -47,3 +47,7 @@ Views //Mati
 Para correr proyecto:
 
 npx nodemon src/app.js
+
+Para ver en el navegador (está configurado sobre puerto 3000):
+
+http://localhost:3000/
