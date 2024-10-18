@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const usersFilePath = path.join(__dirname, '../models/users.json');
+const usersFilePath = path.join(__dirname, '../models/users/users.json');
 
 // Función para obtener todos los usuarios (GET /users)
 const getUsers = (req, res) => {
@@ -18,11 +18,11 @@ const loginUser = (req, res) => {
         if (err) return res.status(500).send('Error al leer el archivo de usuarios');
         const users = JSON.parse(data);
         const user = users.find(u => u.username === username && u.password === password);
-        if (!user) return res.status(401).send('Credenciales inválidas');
+        if (!user) return res.status(401).send(users);
         
         // Persistir el usuario logueado en la sesión
         req.session.user = user;
-        res.send('Usuario logueado con éxito');
+        res.render('main', { user: req.session.user }); //envío el usuario al main para utilizarlo
     });
 };
 
