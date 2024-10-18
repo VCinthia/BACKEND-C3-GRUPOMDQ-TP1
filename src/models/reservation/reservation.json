@@ -1,0 +1,23 @@
+[
+    {
+      "id": 1,
+      "numMesa": 5,
+      "fechaDeTurno": "2024-10-19T20:00:00.000Z",
+      "estado": "Pendiente",
+      "nombreCliente": "Faith Kub I",
+      "comentario": "Sin lactosa",
+      "emailUsuarioCreador": "ana.garcia@example.com"
+    },
+    {
+      "id": 2,
+      "numMesa": 5,
+      "fechaDeTurno": "2024-10-19T20:00:00.000Z",
+      "estado": "Confirmada",
+      "nombreCliente": "Jenny Rippin DVM",
+      "comentario": "Sin lactosa",
+      "emailUsuarioCreador": "carlos.lopez@gmail.com"
+    }
+  
+  ]
+  
+  
