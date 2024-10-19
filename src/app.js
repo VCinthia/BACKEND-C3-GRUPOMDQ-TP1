@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const session = require('express-session');
 */
 
 //utilizando módulos ES (ECMAScript Modules)
@@ -20,6 +21,8 @@ import reservationRoutes from './routes/reservationRoutes.js';
 import { fileURLToPath } from 'url';
 import dotnet from 'dotenv'
 import { baseAPI } from './core/const.js';
+import session from 'express-session';
+
 
 const app = express();
 const PUERTO = process.env.PORT || 3000;
@@ -34,7 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //datos de sesión
-const session = require('express-session');
+
 app.use(session({
     secret: 'secret',
     resave: false,
@@ -72,7 +75,7 @@ app.get('/reservationList', function (req, res) {
     
 //     res.render('main');
 // });
-app.use('/', usersRouter)
+app.use('/', userRouters)
 
 
 

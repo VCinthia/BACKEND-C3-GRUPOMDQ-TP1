@@ -5,7 +5,7 @@ export async function crearReserva( req, res) {
     try {
         console.log("REQUEST CONTROLLER: " ,req.body);
         const nuevaReserva = await reservationService.crearReserva(req.body);
-        if(!nuevaReserva) return res.status(404).json({ message: `El usuario con email: ${req.body.emailUsuarioCreador}, no está registrado en la base de datos ` }); 
+        if(!nuevaReserva) return res.status(404).json({ message: `El usuario con username: ${req.body.usernameUsuarioCreador}, no está registrado en la base de datos ` }); 
         res.status(201).json(nuevaReserva);
     } catch (error) {
         console.error("Error en el controlador:", error);
@@ -20,7 +20,7 @@ export async function crearReserva( req, res) {
 
 export async function obtenerReservasPorTipoDeUsuario (req, res) {
     try {
-        const reservas = await reservationService.getReservasPorTipoUsuario(req.params.emailUser);
+        const reservas = await reservationService.getReservasPorTipoUsuario(req.params.username);
         if (!reservas ) {return res.status(404).json({ message: 'No se encontraron reservas' });}
         else if(reservas.message){
             return res.status(400).json({ message: reservas.message });

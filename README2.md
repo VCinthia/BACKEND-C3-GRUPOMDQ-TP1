@@ -24,7 +24,7 @@ Este proyecto consiste en un sistema de gestión de usuarios y reservas. Cada en
 
 **Modelado:**
 
-- **JSON** (`users.json`): El archivo JSON contiene la estructura de los usuarios con atributos como `nombre`, `apellido`, `mail`, `rol` (Cliente/Personal), y `contraseña`.
+- **JSON** (`users.json`): El archivo JSON contiene la estructura de los usuarios con atributos como `nombre`, `apellido`, `username`, `rol` (Cliente/Personal), y `password`.
 
 - **Clase JS** (`Users.js`): El modelo en JavaScript define la clase `User` con los mismos atributos mencionados anteriormente. Incluye métodos para crear y manipular usuarios.
 
@@ -34,7 +34,7 @@ Este proyecto consiste en un sistema de gestión de usuarios y reservas. Cada en
 
 - **JSON** (`reservations.json`): Este archivo almacena la información de las reservas, como `usuario`, `fecha`, `mesa`, `estado` (pendiente, confirmada, cancelada).
 
-- **Clase JS** (`Reservations.js`): Define la clase `Reservation`, con atributos como el `usuario`, `fecha`, `mesa`, y `estado`.
+- **Clase JS** (`Reservations.js`): Define la clase `Reservation`, con atributos como el `usuario`, `fecha`, `mesa`, `estado` y `usernameUsuarrioCreador`.
 
 ---
 

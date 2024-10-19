@@ -2,7 +2,7 @@ import ReservationModel from "../models/reservation/Reservation.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import * as functions from "../utils/function.js";
-import { usuarioExiste, buscarUsuarioPorEmail } from "../services/userService.js";
+import { usuarioExiste, buscarUsuarioPorUsername } from "../services/userService.js";
 import { ReservationMesa, ReservationTurnos,ReservationState, UserRol } from "../core/enums.js";
 import { DateTime } from 'luxon';
 
@@ -42,7 +42,7 @@ export async function crearReserva(reservationData) {
 
 
 
-export async function getReservasPorTipoUsuario(emailUser) {
+export async function getReservasPorTipoUsuario(username) {
   try {
     // Obtener la ruta del archivo de reservas
     const __filename = fileURLToPath(import.meta.url);
@@ -56,21 +56,21 @@ export async function getReservasPorTipoUsuario(emailUser) {
     // Filtro por tipo:
     const usuariosEnBase = await functions.leerArchivoJSON(usuariosFilePath);
     console.log("UsuariosBASE:", usuariosEnBase);
-    const usuarioEncontrado = buscarUsuarioPorEmail(usuariosEnBase, emailUser);
+    const usuarioEncontrado = buscarUsuarioPorUsername(usuariosEnBase, username);
     if(!usuarioEncontrado){
-        return { message: `No se encontró ningún usuario registrado con el email proporcionado.`};
+        return { message: `No se encontró ningún usuario registrado con el username proporcionado.`};
     }
     console.log("UsuariosEncontrado:", usuarioEncontrado);
     let reservasSelected;
     if(usuarioEncontrado.rol === UserRol.CLIENTE){
-        reservasSelected = filtrarReservasPorEmail(reservasEnBase, emailUser);
+        reservasSelected = filtrarReservasPorUsername(reservasEnBase, username);
     }else if (usuarioEncontrado.rol === UserRol.PERSONAL){
         reservasSelected = reservasEnBase;
     }
     console.log("ReservasSElec:", reservasSelected);
 
     if(reservasSelected.length === 0){
-        return { message: `No se encontró ninguna reserva registrada por el usuario: ${emailUser} `};
+        return { message: `No se encontró ninguna reserva registrada por el usuario: ${username} `};
     }
     console.log("Reservas Selected:", reservasSelected);
 
@@ -167,8 +167,8 @@ export async function actualizarEstado(idReserva, nuevoEstado) {
   }
 
 
-export function filtrarReservasPorEmail(reservas, email) {
-    return reservas.filter(reserva => reserva.emailUsuarioCreador === email);
+export function filtrarReservasPorUsername(reservas, username) {
+    return reservas.filter(reserva => reserva.usernameUsuarioCreador === username);
 }
 
 export function filtrarReservasPorId(reservas, id) {
@@ -179,9 +179,9 @@ export function filtrarReservasPorId(reservas, id) {
 
 //METODOS PRIVADOS
 async function crearNuevaReserva(id, reservationData) {
-  const { numMesa, fechaDeTurno, nombreCliente, comentario, emailUsuarioCreador } = reservationData;
- if(await usuarioExiste(emailUsuarioCreador)){
-    return new ReservationModel(id,numMesa,fechaDeTurno,nombreCliente,comentario, emailUsuarioCreador);
+  const { numMesa, fechaDeTurno, nombreCliente, comentario, usernameUsuarioCreador } = reservationData;
+ if(await usuarioExiste(usernameUsuarioCreador)){
+    return new ReservationModel(id,numMesa,fechaDeTurno,nombreCliente,comentario, usernameUsuarioCreador);
  }else{
     return;
  } 

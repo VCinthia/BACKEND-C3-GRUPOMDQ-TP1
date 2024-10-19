@@ -3,16 +3,16 @@ import { UserRol } from "../../core/enums.js";
 export default class User  {
   #nombre;
   #apellido;
-  #email;
+  #username;
   #rol;
-  #contrasenia;
+  #password;
 
-  constructor(nombre, apellido, email, rol, contrasenia) {
+  constructor(nombre, apellido, username, rol, password) {
     this.#nombre = nombre;
     this.#apellido = apellido;
-    this.#email = email;
+    this.#username = username;
     this.#rol = rol;
-    this.#contrasenia = contrasenia;
+    this.#password = password;
   }
 
 // Métodos públicos para acceder a los datos privados(js ES6)
@@ -23,8 +23,8 @@ get nombre() {
 get apellido(){
   return this.#apellido;
 }
-get email() {
-    return this.#email;
+get username() {
+    return this.#username;
 }
 get rol(){
   return this.#rol;
@@ -37,8 +37,8 @@ set nombre(nombre) {
 set apellido(apellido) {
   this.#apellido = apellido;
 }
-set email(email) {
-  this.#email = email;
+set username(username) {
+  this.#username = username;
 }
 set rol(rol) {
   if(!Object.values(UserRol).includes(rol)){
@@ -46,21 +46,21 @@ set rol(rol) {
   }
   this.#rol = rol;
 }
-set contrasenia(contrasenia) {
-  this.#contrasenia = contrasenia;
+set password(password) {
+  this.#password = password;
 }
 
 
 // Método para comparar la contraseña(no tiene getter para no exponerla)
-verificarContrasenia(contrasenia) {
-  return this.#contrasenia === contrasenia;
+verificarPassword(password) {
+  return this.#password === password;
 }
 
 mostrarDetalles() {
   return `
         Nombre: ${this.#nombre}, 
         Apellido: ${this.#apellido}, 
-        Email: ${this.#email}, 
+        Username: ${this.#username}, 
         Rol: ${this.#rol}
         `;
 }
@@ -70,9 +70,9 @@ toJSON() {
   return {
       nombre: this.#nombre,
       apellido: this.#apellido,
-      email: this.#email,
+      username: this.#username,
       rol: this.#rol,
-      contrasenia: this.#contrasenia
+      password: this.#password
       // No se incluye contrasenia por razones de seguridad
   };
 }

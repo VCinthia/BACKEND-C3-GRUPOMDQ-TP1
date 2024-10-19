@@ -1,17 +1,19 @@
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/userController');
+import express from "express";
+import * as userController from '../controllers/userController.js';
+const routerUser = express.Router();
+
 
 // Rutas para la entidad Users
-router.get('/', userController.getUsers);
-router.post('/', userController.createUser);
-router.put('/:id', userController.updateUser);
-router.delete('/:id', userController.deleteUser);
+routerUser.get('/', userController.getUsers);
+routerUser.post('/', userController.createUser);
+routerUser.put('/:id', userController.updateUser);
+routerUser.delete('/:id', userController.deleteUser);
 
 // Ruta para login (Obtener usuario según credenciales)
-router.post('/main', userController.loginUser);
+routerUser.post('/main', userController.loginUser);
 
 // Ruta para logout (Eliminar usuario de la sesión)
-router.post('/logout', userController.logoutUser);
+routerUser.post('/logout', userController.logoutUser);
 
-module.exports = router;
+
+export default routerUser;

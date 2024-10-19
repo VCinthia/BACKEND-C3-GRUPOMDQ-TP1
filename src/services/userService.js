@@ -5,33 +5,33 @@ import * as functions from "../utils/function.js";
 
 
 export function crearUsuario(usuarioCreador) {
-    //todo: agregar validacion que no se agregue un usuario con el mismo "email" que es la PK
-    const { nombre, apellido, email, rol, contrasenia } = usuarioCreador;
-    return new UserModel(nombre, apellido, email, rol, contrasenia);
+    //todo: agregar validacion que no se agregue un usuario con el mismo "username" que es la PK
+    const { nombre, apellido, username, rol, contrasenia } = usuarioCreador;
+    return new UserModel(nombre, apellido, username, rol, contrasenia);
 }
 
 
 
 /**
- * Busca un Usuario registrado que coincida con el email 
+ * Busca un Usuario registrado que coincida con el username 
  * @param {Array<Object>} usuarios 
- * @param {String} email 
+ * @param {String} username 
  * @returns Si hay una coincidencia retorna el Objeto User, de lo contrario retorna Undefined
  */
- export function buscarUsuarioPorEmail(usuarios, email) {
-    return usuarios.find(usuario => usuario.email == email);
+ export function buscarUsuarioPorUsername(usuarios, username) {
+    return usuarios.find(usuario => usuario.username == username);
 }
 
 
 
-export async function usuarioExiste(emailUsuarioCreador) {
+export async function usuarioExiste(usernameUsuarioCreador) {
     try{
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
     const usuariosFilePath = path.join(__dirname, "../models/user/user.json");
     const usuariosEnBase = await functions.leerArchivoJSON(usuariosFilePath);
     
-    const usuarioIndex = usuariosEnBase.findIndex((usuario) => usuario.email === emailUsuarioCreador);
+    const usuarioIndex = usuariosEnBase.findIndex((usuario) => usuario.username === usernameUsuarioCreador);
     if (usuarioIndex == -1) { //sino encuentra coincidencia ,devuelve -1
       return false;
     }

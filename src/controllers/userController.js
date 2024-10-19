@@ -1,9 +1,17 @@
-const fs = require('fs');
-const path = require('path');
-const usersFilePath = path.join(__dirname, '../models/users/users.json');
+//const fs = require('fs');
+//const path = require('path');
+import fs from 'fs';
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const usersFilePath = path.join(__dirname, '../models/user/user.json');
+
+
 
 // Función para obtener todos los usuarios (GET /users)
-const getUsers = (req, res) => {
+export const getUsers = (req, res) => {
     fs.readFile(usersFilePath, 'utf-8', (err, data) => {
         if (err) return res.status(500).send('Error al leer el archivo de usuarios');
         const users = JSON.parse(data);
@@ -12,7 +20,7 @@ const getUsers = (req, res) => {
 };
 
 // Obtener usuario según credenciales (Login)
-const loginUser = (req, res) => {
+ export const loginUser = (req, res) => {
     const { username, password } = req.body;
     fs.readFile(usersFilePath, 'utf-8', (err, data) => {
         if (err) return res.status(500).send('Error al leer el archivo de usuarios');
@@ -27,7 +35,7 @@ const loginUser = (req, res) => {
 };
 
 // Eliminar usuario de la sesión (Logout)
-const logoutUser = (req, res) => {
+export const logoutUser = (req, res) => {
     req.session.destroy(err => {
         if (err) return res.status(500).send('Error al cerrar sesión');
         res.send('Usuario deslogueado con éxito');
@@ -35,7 +43,7 @@ const logoutUser = (req, res) => {
 };
 
 // Crear un nuevo usuario
-const createUser = (req, res) => {
+export const createUser = (req, res) => {
     const newUser = req.body;
     fs.readFile(usersFilePath, 'utf-8', (err, data) => {
         if (err) return res.status(500).send('Error al leer el archivo de usuarios');
@@ -49,7 +57,7 @@ const createUser = (req, res) => {
 };
 
 // Actualizar un usuario
-const updateUser = (req, res) => {
+export const updateUser = (req, res) => {
     const { id } = req.params;
     const updatedUser = req.body;
     fs.readFile(usersFilePath, 'utf-8', (err, data) => {
@@ -66,7 +74,7 @@ const updateUser = (req, res) => {
 };
 
 // Eliminar un usuario
-const deleteUser = (req, res) => {
+export const deleteUser = (req, res) => {
     const { id } = req.params;
     fs.readFile(usersFilePath, 'utf-8', (err, data) => {
         if (err) return res.status(500).send('Error al leer el archivo de usuarios');
@@ -79,6 +87,7 @@ const deleteUser = (req, res) => {
     });
 };
 
+/*
 module.exports = {
     getUsers,
     loginUser,
@@ -87,3 +96,4 @@ module.exports = {
     updateUser,
     deleteUser
 };
+*/

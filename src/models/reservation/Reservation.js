@@ -9,17 +9,17 @@ export default class Reservation {
     #estado;
     #nombreCliente;
     #comentario;
-    #emailUsuarioCreador;
+    #usernameUsuarioCreador;
 
 
-    constructor(id,numMesa,fechaDeTurno,nombreCliente,comentario,emailUsuarioCreador) {
+    constructor(id,numMesa,fechaDeTurno,nombreCliente,comentario,usernameUsuarioCreador) {
         this.#id = id;
         this.#numMesa = numMesa;
         this.#fechaDeTurno = fechaDeTurno;
         this.#estado = ReservationState.PENDIENTE;
         this.#nombreCliente = nombreCliente;
         this.#comentario = comentario;
-        this.#emailUsuarioCreador = emailUsuarioCreador;
+        this.#usernameUsuarioCreador = usernameUsuarioCreador;
     }
 
 
@@ -43,8 +43,8 @@ export default class Reservation {
     get comentario() {
         return this.#comentario;
     }
-    get emailUsuarioCreador() {
-        return this.#emailUsuarioCreador;
+    get usernameUsuarioCreador() {
+        return this.#usernameUsuarioCreador;
     }
 
 
@@ -73,8 +73,8 @@ export default class Reservation {
     set comentario(comentario) {
         this.#comentario = comentario;
     }
-    set emailUsuarioCreador(emailUsuarioCreador) {
-        this.#emailUsuarioCreador = emailUsuarioCreador;
+    set usernameUsuarioCreador(usernameUsuarioCreador) {
+        this.#usernameUsuarioCreador = usernameUsuarioCreador;
     }
 
 
@@ -87,7 +87,7 @@ mostrarDetalles() {
     Estado: ${this.#estado},
     Cliente: ${this.#nombreCliente},
     Comentario: ${this.#comentario},
-    Email Usuario Creador: ${this.#emailUsuarioCreador}
+    Username Usuario Creador: ${this.#usernameUsuarioCreador}
     `;
 }
 
@@ -101,7 +101,7 @@ toJSON() {
         estado: this.#estado,
         nombreCliente: this.#nombreCliente,
         comentario: this.#comentario,
-        emailUsuarioCreador: this.#emailUsuarioCreador
+        usernameUsuarioCreador: this.#usernameUsuarioCreador
     };
   }
 
