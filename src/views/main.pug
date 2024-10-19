@@ -4,7 +4,11 @@ html
         title Gestión de Reservas
         link(rel='stylesheet', href='/stylesheets/style.css') 
     body
-        h1 Gestión de Reservas
+        h1 Gestión de Reservas 
+        if user
+            h2 Bienvenido, #{user.nombre}!
+        else
+            h2 Bienvenido invitado!
         div.button-container
             button(onclick="location.href='/reservationList'") Ver Mis Reservas
             button(onclick="location.href='/newReservation'") Agregar Reserva

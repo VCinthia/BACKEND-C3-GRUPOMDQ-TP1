@@ -1,12 +1,17 @@
-//var express = require('express');
-import express from "express"; 
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const userController = require('../controllers/userController');
 
+// Rutas para la entidad Users
+router.get('/', userController.getUsers);
+router.post('/', userController.createUser);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+// Ruta para login (Obtener usuario según credenciales)
+router.post('/main', userController.loginUser);
 
-//module.exports = router;
-export default router;
+// Ruta para logout (Eliminar usuario de la sesión)
+router.post('/logout', userController.logoutUser);
+
+module.exports = router;

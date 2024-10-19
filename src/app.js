@@ -32,6 +32,16 @@ const __dirname = path.dirname(__filename);
 //lo coloqué antes de las rutas y cambié a true para que se pueda enviar el form del login
 app.use(express.urlencoded({ extended: true }));
 
+
+//datos de sesión
+const session = require('express-session');
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -56,12 +66,14 @@ app.get('/reservationList', function (req, res) {
 
 
 //lo agregué para probar si funciona el login (Mati)
-app.post('/main', (req, res) => {
-    const { username, password } = req.body;
-    // validación de credenciales y condicional
+// app.post('/main', (req, res) => {
+//     const { username, password } = req.body;
+//     // validación de credenciales y condicional
     
-    res.render('main');
-});
+//     res.render('main');
+// });
+app.use('/', usersRouter)
+
 
 
 app.use(logger('dev'));
