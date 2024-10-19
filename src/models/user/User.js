@@ -1,13 +1,11 @@
 import { UserRol } from "../../core/enums.js";
 
-
 export default class User  {
   #nombre;
   #apellido;
   #email;
   #rol;
   #contrasenia;
-
 
   constructor(nombre, apellido, email, rol, contrasenia) {
     this.#nombre = nombre;
@@ -16,7 +14,6 @@ export default class User  {
     this.#rol = rol;
     this.#contrasenia = contrasenia;
   }
-
 
 // Métodos públicos para acceder a los datos privados(js ES6)
 //GETTERS
@@ -32,7 +29,6 @@ get email() {
 get rol(){
   return this.#rol;
 }
-
 
  //SETTERS
 set nombre(nombre) {
@@ -55,23 +51,19 @@ set contrasenia(contrasenia) {
 }
 
 
-
-
 // Método para comparar la contraseña(no tiene getter para no exponerla)
 verificarContrasenia(contrasenia) {
   return this.#contrasenia === contrasenia;
 }
 
-
 mostrarDetalles() {
   return `
-        Nombre: ${this.#nombre},
-        Apellido: ${this.#apellido},
-        Email: ${this.#email},
+        Nombre: ${this.#nombre}, 
+        Apellido: ${this.#apellido}, 
+        Email: ${this.#email}, 
         Rol: ${this.#rol}
         `;
 }
-
 
 //Método para serializar el objeto (no borrar)
 toJSON() {
@@ -85,10 +77,4 @@ toJSON() {
   };
 }
 
-
 }
-
-
-
-
-

@@ -2,28 +2,28 @@
   {
     "nombre": "Juan",
     "apellido": "Pérez",
-    "mail": "juan.perez@example.com",
+    "email": "juan.perez@example.com",
     "rol": "Cliente",
     "contraseña": "juanperez"
   },
   {
       "nombre": "Ana",
       "apellido": "García",
-      "mail": "ana.garcia@example.com",
+      "email": "ana.garcia@example.com",
       "rol": "Cliente",
       "contraseña": "anagarcia"
   },
   {
       "nombre": "Carlos",
-      "apellido": "Rodríguez",
-      "mail": "carlos.rodriguez@example.com",
+      "apellido": "López",
+      "email": "carlos.lopez@gmail.com",
       "rol": "Personal",
-      "contraseña": "carlosrodriguez"
+      "contrasenia": "passCarlos"
   },    
   {
     "nombre": "María",
     "apellido": "López",
-    "mail": "maria.lopez@example.com",
+    "email": "maria.lopez@example.com",
     "rol": "Personal",
     "contraseña": "marialopez"
   }

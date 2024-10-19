@@ -1,3 +1,4 @@
+import {crearFechaUTC} from '../utils/function.js';
 
 export const ReservationState = {
     PENDIENTE: 'Pendiente',
@@ -5,7 +6,6 @@ export const ReservationState = {
     CANCELADA: 'Cancelada',
     COMPLETADA: 'Completada'
 };
-
 
 export const UserRol = {
     CLIENTE: 'Cliente',
@@ -29,4 +29,3 @@ export const ReservationTurnos = {
     MANIANA_TURNO_DOS: crearFechaUTC(21,0,1),
     MANIANA_TURNO_TRES: crearFechaUTC(22,0,1),
 }
-
