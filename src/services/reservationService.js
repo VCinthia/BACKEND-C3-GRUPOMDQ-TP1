@@ -4,6 +4,7 @@ import path from "path";
 import * as functions from "../utils/function.js";
 import { usuarioExiste, buscarUsuarioPorEmail } from "../services/userService.js";
 import { ReservationMesa, ReservationTurnos,ReservationState, UserRol } from "../core/enums.js";
+import { DateTime } from 'luxon';
 
 
 
@@ -166,9 +167,6 @@ export async function actualizarEstado(idReserva, nuevoEstado) {
   }
 
 
-
-
-
 export function filtrarReservasPorEmail(reservas, email) {
     return reservas.filter(reserva => reserva.emailUsuarioCreador === email);
 }
@@ -189,19 +187,19 @@ async function crearNuevaReserva(id, reservationData) {
  } 
 }
 
-//todo: verificar conversion hora
+
 function eliminarTurnosOcupados(totalDeTurnos, reservasActivas) {
-    return totalDeTurnos.filter(turno => {
-        return !reservasActivas.some(reserva => {
-            // Convertir los strings a objetos Date
-            const fechaReserva = new Date(reserva.fechaDeTurno);
-            const fechaTurno = new Date(turno.turno); 
-            console.log("RESERVA: "+fechaReserva+" TURNO: "+fechaTurno);
-            
-            // Comparar numMesa y las fechas
-            return reserva.numMesa === turno.mesa && fechaReserva.getTime() === fechaTurno.getTime();
-        });
-    });
+  return totalDeTurnos.filter(turno => {
+      return !reservasActivas.some(reserva => {
+          // Convertir las fechas a objetos DateTime usando Luxon
+          const fechaReserva = DateTime.fromISO(reserva.fechaDeTurno, { zone: 'utc' });
+          const fechaTurno = DateTime.fromISO(turno.turno, { zone: 'utc' });
+          console.debug("RESERVA: " + fechaReserva.toString() + " TURNO: " + fechaTurno.toString());
+
+          // Comparar mesa y fechas (usando toMillis() para comparar las fechas)
+          return reserva.numMesa === turno.mesa && fechaReserva.toMillis() === fechaTurno.toMillis();
+      });
+  });
 }
 
 function obtenerTotalDeturnos(){
@@ -219,3 +217,4 @@ function getReservasActivas(reservas ){
     return reservas.filter(reserva => 
          reserva.estado != ReservationState.CANCELADA);
 }
+

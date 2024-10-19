@@ -1,3 +1,0 @@
-[
-  "{\n  \"id\": 4,\n  \"numMesa\": 1,\n  \"fechaDeTurno\": \"2024-10-19T20:00:00.000Z\",\n  \"estado\": \"Pendiente\",\n  \"nombreCliente\": \"Carlos López\",\n  \"comentario\": \"Sin lactosa\",\n  \"usuarioCreador\": {\n    \"nombre\": \"Carlos\",\n    \"apellido\": \"López\",\n    \"email\": \"carlos.lopez@gmail.com\",\n    \"rol\": \"Personal\",\n    \"contrasenia\": \"passCarlos\"\n  }\n}"
-]
