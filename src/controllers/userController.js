@@ -1,40 +1,38 @@
-//const fs = require('fs');
-//const path = require('path');
-import fs from 'fs';
-import { fileURLToPath } from "url";
-import path from "path";
+import { leerArchivoJSON, escribirArchivoJSON } from '../utils/function.js';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const usersFilePath = path.join(__dirname, '../models/user/user.json');
 
-
-
-// Función para obtener todos los usuarios (GET /users)
-export const getUsers = (req, res) => {
-    fs.readFile(usersFilePath, 'utf-8', (err, data) => {
-        if (err) return res.status(500).send('Error al leer el archivo de usuarios');
-        const users = JSON.parse(data);
+// Obtener todos los usuarios (GET /users)
+export const getUsers = async (req, res) => {
+    try {
+        const users = await leerArchivoJSON(usersFilePath);
         res.json(users);
-    });
+    } catch (error) {
+        res.status(500).send('Error al leer el archivo de usuarios');
+    }
 };
 
-// Obtener usuario según credenciales (Login)
- export const loginUser = (req, res) => {
+// Login de usuario
+export const loginUser = async (req, res) => {
     const { username, password } = req.body;
-    fs.readFile(usersFilePath, 'utf-8', (err, data) => {
-        if (err) return res.status(500).send('Error al leer el archivo de usuarios');
-        const users = JSON.parse(data);
+    try {
+        const users = await leerArchivoJSON(usersFilePath);
         const user = users.find(u => u.username === username && u.password === password);
-        if (!user) return res.status(401).send(users);
+        if (!user) return res.status(401).send('Credenciales incorrectas');
         
-        // Persistir el usuario logueado en la sesión
+        // Guardar el usuario en la sesión
         req.session.user = user;
-        res.render('main', { user: req.session.user }); //envío el usuario al main para utilizarlo
-    });
+        res.render('main', { user: req.session.user }); // Enviar el usuario a la vista 'main'
+    } catch (error) {
+        res.status(500).send('Error al leer el archivo de usuarios');
+    }
 };
 
-// Eliminar usuario de la sesión (Logout)
+// Logout de usuario
 export const logoutUser = (req, res) => {
     req.session.destroy(err => {
         if (err) return res.status(500).send('Error al cerrar sesión');
@@ -43,57 +41,44 @@ export const logoutUser = (req, res) => {
 };
 
 // Crear un nuevo usuario
-export const createUser = (req, res) => {
+export const createUser = async (req, res) => {
     const newUser = req.body;
-    fs.readFile(usersFilePath, 'utf-8', (err, data) => {
-        if (err) return res.status(500).send('Error al leer el archivo de usuarios');
-        const users = JSON.parse(data);
+    try {
+        const users = await leerArchivoJSON(usersFilePath);
         users.push(newUser);
-        fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), (err) => {
-            if (err) return res.status(500).send('Error al guardar el usuario');
-            res.status(201).send('Usuario creado con éxito');
-        });
-    });
+        await escribirArchivoJSON(usersFilePath, users);
+        res.status(201).send('Usuario creado con éxito');
+    } catch (error) {
+        res.status(500).send('Error al crear el usuario');
+    }
 };
 
 // Actualizar un usuario
-export const updateUser = (req, res) => {
+export const updateUser = async (req, res) => {
     const { id } = req.params;
     const updatedUser = req.body;
-    fs.readFile(usersFilePath, 'utf-8', (err, data) => {
-        if (err) return res.status(500).send('Error al leer el archivo de usuarios');
-        const users = JSON.parse(data);
+    try {
+        const users = await leerArchivoJSON(usersFilePath);
         const index = users.findIndex(user => user.id === id);
         if (index === -1) return res.status(404).send('Usuario no encontrado');
+        
         users[index] = { ...users[index], ...updatedUser };
-        fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), (err) => {
-            if (err) return res.status(500).send('Error al actualizar el usuario');
-            res.send('Usuario actualizado con éxito');
-        });
-    });
+        await escribirArchivoJSON(usersFilePath, users);
+        res.send('Usuario actualizado con éxito');
+    } catch (error) {
+        res.status(500).send('Error al actualizar el usuario');
+    }
 };
 
 // Eliminar un usuario
-export const deleteUser = (req, res) => {
+export const deleteUser = async (req, res) => {
     const { id } = req.params;
-    fs.readFile(usersFilePath, 'utf-8', (err, data) => {
-        if (err) return res.status(500).send('Error al leer el archivo de usuarios');
-        let users = JSON.parse(data);
+    try {
+        let users = await leerArchivoJSON(usersFilePath);
         users = users.filter(user => user.id !== id);
-        fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), (err) => {
-            if (err) return res.status(500).send('Error al eliminar el usuario');
-            res.send('Usuario eliminado con éxito');
-        });
-    });
+        await escribirArchivoJSON(usersFilePath, users);
+        res.send('Usuario eliminado con éxito');
+    } catch (error) {
+        res.status(500).send('Error al eliminar el usuario');
+    }
 };
-
-/*
-module.exports = {
-    getUsers,
-    loginUser,
-    logoutUser,
-    createUser,
-    updateUser,
-    deleteUser
-};
-*/
