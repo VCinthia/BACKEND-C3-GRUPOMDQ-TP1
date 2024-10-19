@@ -5,6 +5,7 @@ html
         link(rel='stylesheet', href='/stylesheets/style.css')
     body
         h1 Lista de Reservas
+
         table
             thead
                 tr
@@ -15,26 +16,75 @@ html
                     th Estado
                     th Comentarios
                     th Acciones
-            tbody
-                tr
-                    td Juan Pérez
-                    td 2024-10-20
-                    td 19:00
-                    td 5
-                    td Pendiente
-                    td Este es un comentario.
-                    td
-                        button(type='button', onclick='confirmarReserva(1)').btnConfirm Confirmar
-                        button(type='button', onclick='eliminarReserva(1)').btnDelete Eliminar
-                tr
-                    td María López
-                    td 2024-10-21
-                    td 20:00
-                    td 3
-                    td Pendiente
-                    td Sin comentarios.
-                    td
-                        button(type='button', onclick='confirmarReserva(2)').btnConfirm Confirmar
-                        button(type='button', onclick='eliminarReserva(2)').btnDelete Eliminar
-        
-        button(onclick="location.href='/main'") Volver 
+            tbody 
+                each reserva in listaReservas
+                    tr
+                        td= reserva.nombreCliente
+                        td= reserva.fechaDeTurno ? new Date(reserva.fechaDeTurno).toLocaleDateString('es-ES') : 'Fecha no disponible'
+                        td= reserva.fechaDeTurno ? reserva.fechaDeTurno.split('T')[1].split('.')[0] : 'Hora no disponible'
+                        td= reserva.numMesa || 'Mesa no asignada'
+                        td= reserva.estado || 'Estado no disponible'
+                        td= reserva.comentario || 'Sin comentarios.'
+                        td
+                            button(type='button',onclick=`actualizarEstadoReserva(${reserva.id}, 'Confirmado')`,class=reserva.estado === 'Confirmado' ? 'btnDisabled' : '', disabled=reserva.estado === 'Confirmado').btnConfirm Confirmar
+                            button(type='button', onclick=`eliminarReserva(${reserva.id})`).btnDelete Eliminar
+
+        button(type='button', onclick="location.href='/main'") Volver
+
+
+
+script.
+  function actualizarEstadoReserva(id, nuevoEstado) {
+
+    const confirmacion = confirm("¿Estás seguro de que quieres confirmar esta reserva?");
+    
+    if (confirmacion) {
+      fetch(`/api/reservations/${id}/${nuevoEstado}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Error al actualizar el estado de la reserva');
+      })
+      .then(data => {
+        alert('Estado de la reserva actualizado con éxito.');
+        location.reload(); // Recargar la página si es necesario
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('No se pudo actualizar el estado de la reserva.');
+      });
+    }
+  };
+  function eliminarReserva(id) {
+
+    const confirmacion = confirm("¿Estás seguro de que quieres eliminar esta reserva?");
+    
+    if (confirmacion) {
+      fetch(`/api/reservations/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Error al eliminar la reserva');
+      })
+      .then(data => {
+        alert('Reserva eliminada con éxito');
+        location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('No se pudo eliminar la reserva.');
+      });
+    }
+  }

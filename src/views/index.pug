@@ -1,12 +1,12 @@
 doctype html
 html
     head
-        title Gestión de Pedidos
+        title Gestión de Reservas
         link(rel='stylesheet', href='/stylesheets/style.css')
     body
-        h1 Bienvenido al Sistema de Gestión de Pedidos
+        h1 Bienvenido al Sistema de Gestión de Reservas
         h2 Iniciar Sesión
-        form(action='/main', method='post')
+        form(action='/api/users/login', method='post')
             div
                 label(for='username') Usuario:
                 input(type='text', id='username', name='username', required)

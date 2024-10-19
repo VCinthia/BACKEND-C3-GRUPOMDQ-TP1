@@ -42,41 +42,12 @@ app.use(session({
     secret: 'secret',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { maxAge: 60 * 60 * 1000 } // 1 hora
 }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
-
-
-app.get('/', function (req, res) {
-  res.render('index');
-});
-
-app.get('/main', function (req, res) {
-  res.render('main');
-});
-
-app.get('/newReservation', function (req, res) {
-  res.render('newReservation');
-});
-
-app.get('/reservationList', function (req, res) {
-  res.render('reservationList');
-});
-
-
-//lo agregué para probar si funciona el login (Mati)
-// app.post('/main', (req, res) => {
-//     const { username, password } = req.body;
-//     // validación de credenciales y condicional
-    
-//     res.render('main');
-// });
-app.use('/', userRouters)
-
 
 
 app.use(logger('dev'));
@@ -88,6 +59,10 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(baseAPI+'/', indexRouter);
 app.use(baseAPI+'/users', userRouters);
 app.use(baseAPI+'/reservations', reservationRoutes);
+
+app.get('/main', (req, res) => {
+  res.render('main', { user: req.session.user }); // Renderiza la vista principal
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -108,7 +83,7 @@ app.use(function(err, req, res, next) {
 
 //INICIO DEL SERVIDOR
 app.listen(PUERTO, () => {//VER SI HAY QUE CAMBIARLO PARA RENDERIZAR EN EL NAVEGADOR
-  console.log(`Servidor escuchando en http://localhost:${PUERTO}`);
+  console.log(`Servidor escuchando en http://localhost:${PUERTO}/api`);
 });
 
 

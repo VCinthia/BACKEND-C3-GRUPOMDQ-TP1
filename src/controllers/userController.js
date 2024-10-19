@@ -26,7 +26,8 @@ export const loginUser = async (req, res) => {
         
         // Guardar el usuario en la sesión
         req.session.user = user;
-        res.render('main', { user: req.session.user }); // Enviar el usuario a la vista 'main'
+        res.redirect('/main')
+        // res.render('main', { user: req.session.user }); // Enviar el usuario a la vista 'main'
     } catch (error) {
         res.status(500).send('Error al leer el archivo de usuarios');
     }
@@ -36,7 +37,7 @@ export const loginUser = async (req, res) => {
 export const logoutUser = (req, res) => {
     req.session.destroy(err => {
         if (err) return res.status(500).send('Error al cerrar sesión');
-        res.send('Usuario deslogueado con éxito');
+        res.render('index');
     });
 };
 

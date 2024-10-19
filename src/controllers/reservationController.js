@@ -3,10 +3,20 @@ const MSG_ERROR_500 = 'Error interno del servidor. Por favor, inténtalo de nuev
 
 export async function crearReserva( req, res) {
     try {
-        console.log("REQUEST CONTROLLER: " ,req.body);
-        const nuevaReserva = await reservationService.crearReserva(req.body);
+        const { reserva, nombreCliente, comentario, usernameUsuarioCreador } = req.body;
+        const [numMesa, fechaDeTurno] = reserva.split('|');
+
+        const reservaCompleta = {
+            numMesa,
+            fechaDeTurno,
+            nombreCliente,
+            comentario,
+            usernameUsuarioCreador
+        };
+
+        const nuevaReserva = await reservationService.crearReserva(reservaCompleta);
         if(!nuevaReserva) return res.status(404).json({ message: `El usuario con username: ${req.body.usernameUsuarioCreador}, no está registrado en la base de datos ` }); 
-        res.status(201).json(nuevaReserva);
+        return res.render('reservationConfirmed')
     } catch (error) {
         console.error("Error en el controlador:", error);
         if (error.isClientError) {
@@ -25,7 +35,7 @@ export async function obtenerReservasPorTipoDeUsuario (req, res) {
         else if(reservas.message){
             return res.status(400).json({ message: reservas.message });
         }
-        res.json(reservas);
+        res.render('reservationList', { listaReservas: reservas });
     } catch (error) {
         console.error("Error en el controlador:", error);
         if (error.isClientError) {
@@ -70,7 +80,7 @@ export async function eliminarReserva (req, res) {
 export async function obtenerFechaTurnosDisponibles (req, res) {
     try {
         const fechaTurnosDisponibles = await reservationService.getFechaTurnosDisponibles();
-        res.json(fechaTurnosDisponibles);
+        res.render('newReservation', {fechasDisponibles: fechaTurnosDisponibles, user: req.session.user})
     } catch (error) {
         console.error("Error en el controlador:", error);
         if (error.isClientError) {

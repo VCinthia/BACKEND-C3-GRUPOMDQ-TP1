@@ -10,7 +10,15 @@ html
         else
             h2 Bienvenido invitado!
         div.button-container
-            button(onclick="location.href='/reservationList'") Ver Mis Reservas
-            button(onclick="location.href='/newReservation'") Agregar Reserva
+            button(onclick=`location.href='/api/reservations/${user.username}'`) Ver Mis Reservas 
+            button(onclick=`location.href='/api/reservations/disponibles'`) Agregar Reserva
         div.logout
-            button(onclick="location.href='/'") Cerrar Sesión
+            form(action='/api/users/logout', method='POST', onsubmit='confirmarCerrarSesion(event)')
+                button(type='submit') Cerrar Sesión
+
+    script.
+            function confirmarCerrarSesion(event) {
+                if (!confirm("¿Deseas cerrar sesión?")) {
+                    event.preventDefault();
+                }
+            }

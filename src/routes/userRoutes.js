@@ -10,7 +10,7 @@ routerUser.put('/:id', userController.updateUser);
 routerUser.delete('/:id', userController.deleteUser);
 
 // Ruta para login (Obtener usuario según credenciales)
-routerUser.post('/main', userController.loginUser);
+routerUser.post('/login', userController.loginUser);
 
 // Ruta para logout (Eliminar usuario de la sesión)
 routerUser.post('/logout', userController.logoutUser);

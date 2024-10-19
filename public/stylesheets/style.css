@@ -47,6 +47,12 @@ h2 {
   color: white;
 }
 
+.btnDisabled {
+  background-color: #ccc; 
+  color: #666;       
+  cursor: not-allowed;   
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

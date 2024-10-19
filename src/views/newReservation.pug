@@ -5,25 +5,22 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     h1 Realizar reserva
-    form(action='/main', method='post')
-        div.radioBtnContainer
-            label(for='option1') 16/10 19:00 Mesa 2
-            input(type='radio', id='option1', name='mesa', value='option1', required)
-        div.radioBtnContainer
-            label(for='option2') 16/10 19:00 Mesa 3
-            input(type='radio', id='option2', name='mesa', value='option2', required)
-        div.radioBtnContainer
-            label(for='option3') 16/10 19:00 Mesa 4
-            input(type='radio', id='option3', name='mesa', value='option3', required)
-        div.radioBtnContainer
-            label(for='option4') 16/10 19:00 Mesa 5
-            input(type='radio', id='option4', name='mesa', value='option4', required)
-        div.radioBtnContainer
-            label(for='option5') 16/10 19:00 Mesa 6
-            input(type='radio', id='option5', name='mesa', value='option5', required)
+
+    form(action='/api/reservations', method='post')
+        p Seleccione una opción:
+        each fecha in fechasDisponibles
+            div.radioBtnContainer
+            label(for=fecha.mesa) Fecha: #{new Date(fecha.turno).toLocaleDateString('es-ES')} Hora: #{fecha.turno.split('T')[1].split('.')[0]} Mesa: #{fecha.mesa}
+            input(type='radio', id=fecha.mesa, name='reserva', value=`${fecha.mesa}|${fecha.turno}`, required)
+
+        div 
+            label(for='nombreCliente') Nombre:
+            input(type='text', id='nombreCliente', name='nombreCliente', required) 
         div
-            label(for='comentarios') Comentarios:
-            textarea(id='comentarios', name='comentarios', rows='4', cols='50')
+            label(for='comentario') Comentarios:
+            textarea(id='comentario', name='comentario', rows='4', cols='50')
+        div 
+            input(type='hidden', name='usernameUsuarioCreador', value=user.username)
         div
             button(type='submit') Reservar
-            button(onclick="location.href='/main'") Volver 
+            button(type='button', onclick="location.href='/main'") Volver 
