@@ -8,6 +8,15 @@ import { DateTime } from 'luxon';
 
 export async function crearReserva(reservationData) {
   try {
+    //ValidacionFechaTurno
+    const fechaValida = await esFechaTurnoValido(reservationData.fechaDeTurno, reservationData.numMesa);
+    if(!fechaValida){
+      throw {
+        isClientError: true,
+        message: `La reserva para la mesa ${reservationData.numMesa} en la fecha ${reservationData.fechaDeTurno} no es válida.`
+      };
+    }
+
     // Obtener la ruta del archivo de reservas
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
@@ -176,7 +185,6 @@ async function crearNuevaReserva(id, reservationData) {
  } 
 }
 
-
 function eliminarTurnosOcupados(totalDeTurnos, reservasActivas) {
   // Crear un conjunto para almacenar las combinaciones de mesa y fecha ocupadas
   const ocupados = new Set();
@@ -214,3 +222,15 @@ function esEstadoValido(nuevoEstado) {
   return (Object.values(ReservationState).includes(nuevoEstado));
 }
 
+async function esFechaTurnoValido(fechaDeTurno, numeroMesa) {
+  // Obtener los turnos disponibles
+  const turnosDisponibles = await getFechaTurnosDisponibles();
+  const turnosDisponiblesSet = new Set();
+  turnosDisponibles.forEach(turno => {
+    const clave = `${turno.mesa}|${turno.turno}`;
+    turnosDisponiblesSet.add(clave);
+  });
+  const claveTurnoAValidar = `${numeroMesa}|${fechaDeTurno}`;
+  const existeFecha = turnosDisponiblesSet.has(claveTurnoAValidar);
+  return existeFecha;
+}

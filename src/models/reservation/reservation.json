@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "numMesa": 1,
+    "numMesa": "1",
     "fechaDeTurno": "2024-10-20T21:00:00.000Z",
     "estado": "Confirmada",
     "nombreCliente": "Brad Grant",
@@ -10,7 +10,7 @@
   },
   {
     "id": 2,
-    "numMesa": 2,
+    "numMesa": "2",
     "fechaDeTurno": "2024-10-20T21:00:00.000Z",
     "estado": "Pendiente",
     "nombreCliente": "Kelly Morar",
