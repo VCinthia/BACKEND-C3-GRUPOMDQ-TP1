@@ -1,14 +1,3 @@
-/*
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const session = require('express-session');
-*/
-
 //utilizando módulos ES (ECMAScript Modules)
 import createError from 'http-errors';
 import express from 'express';
@@ -87,8 +76,4 @@ app.listen(PUERTO, () => {//VER SI HAY QUE CAMBIARLO PARA RENDERIZAR EN EL NAVEG
 });
 
 
-
-
-
-//module.exports = app;
 export default app;

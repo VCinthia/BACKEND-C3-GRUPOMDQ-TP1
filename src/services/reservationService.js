@@ -6,8 +6,6 @@ import { usuarioExiste, buscarUsuarioPorUsername } from "../services/userService
 import { ReservationMesa, ReservationTurnos,ReservationState, UserRol } from "../core/enums.js";
 import { DateTime } from 'luxon';
 
-
-
 export async function crearReserva(reservationData) {
   try {
     // Obtener la ruta del archivo de reservas
@@ -151,9 +149,9 @@ export async function actualizarEstado(idReserva, nuevoEstado) {
       const __dirname = path.dirname(__filename);
       const reservasFilePath = path.join(__dirname,"../models/reservation/reservation.json");
       const reservasEnBase = await functions.leerArchivoJSON(reservasFilePath); //retorna un Object
-      console.log("ReservasBASE:", reservasEnBase);
       const reservasActivas = getReservasActivas(reservasEnBase);
-
+      
+      console.log("ReservasActivas:", reservasActivas);
       const totalTurnos = obtenerTotalDeturnos();
       const turnosDisponibles = eliminarTurnosOcupados(totalTurnos, reservasActivas)
 
@@ -189,16 +187,19 @@ async function crearNuevaReserva(id, reservationData) {
 
 
 function eliminarTurnosOcupados(totalDeTurnos, reservasActivas) {
-  return totalDeTurnos.filter(turno => {
-      return !reservasActivas.some(reserva => {
-          // Convertir las fechas a objetos DateTime usando Luxon
-          const fechaReserva = DateTime.fromISO(reserva.fechaDeTurno, { zone: 'utc' });
-          const fechaTurno = DateTime.fromISO(turno.turno, { zone: 'utc' });
-          console.debug("RESERVA: " + fechaReserva.toString() + " TURNO: " + fechaTurno.toString());
+  // Crear un conjunto para almacenar las combinaciones de mesa y fecha ocupadas
+  const ocupados = new Set();
 
-          // Comparar mesa y fechas (usando toMillis() para comparar las fechas)
-          return reserva.numMesa === turno.mesa && fechaReserva.toMillis() === fechaTurno.toMillis();
-      });
+  // Llenar el conjunto con las reservas activas
+  reservasActivas.forEach(reserva => {
+    const clave = `${reserva.numMesa}|${reserva.fechaDeTurno}`;
+    ocupados.add(clave);
+  });
+
+  // Filtrar los turnos que no están ocupados
+  return totalDeTurnos.filter(turno => {
+    const claveTurno = `${turno.mesa}|${turno.turno}`;
+    return !ocupados.has(claveTurno);
   });
 }
 

@@ -3,12 +3,6 @@ import * as userController from '../controllers/userController.js';
 const routerUser = express.Router();
 
 
-// Rutas para la entidad Users
-routerUser.get('/', userController.getUsers);
-routerUser.post('/', userController.createUser);
-routerUser.put('/:id', userController.updateUser);
-routerUser.delete('/:id', userController.deleteUser);
-
 // Ruta para login (Obtener usuario según credenciales)
 routerUser.post('/login', userController.loginUser);
 

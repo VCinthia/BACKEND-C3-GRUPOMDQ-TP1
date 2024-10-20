@@ -32,13 +32,18 @@ h2 {
   justify-content: center;
 }
 
-.btnConfirm, .btnDelete{
+.btnConfirm, .btnDelete, .btnCancel{
   height: 30px;
   width: 100px;
 }
 
 .btnConfirm{
   background-color: green;
+  color: white;
+}
+
+.btnCancel{
+  background-color: rgb(226, 162, 24);
   color: white;
 }
 
