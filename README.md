@@ -5,15 +5,13 @@ Este proyecto entregable 1 es una aplicación que responde al Caso 3 para gestio
 
 ### Integrantes:
 
-- Cynthia Estefanía Choque Galindo
-- Guido Vizzotti
-- Matías Garnica
-- Mauricio Galera
-- Cinthia Romina Vota
+- Cynthia Estefanía Choque Galindo | Controles, rutas de Reservation, Core y Service
+- Guido Vizzotti | Model de Reservation
+- Matías Garnica | Vistas
+- Mauricio Galera | Controles y rutas de User
+- Cinthia Romina Vota | Documentación, estructura y model de User
 
 ### Repositorio GitHub:
-
-https://github.com/VCinthia/BACKEND-C3-GRUPOMDQ-TP1
 
 1. [Repositorio](https://github.com/VCinthia/BACKEND-C3-GRUPOMDQ-TP1)
 2. [Issues](https://github.com/VCinthia/BACKEND-C3-GRUPOMDQ-TP1/issues?q=is%3Aissue+is%3Aclosed)
