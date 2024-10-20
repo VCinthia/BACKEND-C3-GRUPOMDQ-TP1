@@ -3,7 +3,6 @@ import * as reservationController from '../controllers/reservationController.js'
 const routerReservation = express.Router();
 
 
-
 //Rutas para reservaciones
 routerReservation.get('/disponibles', reservationController.obtenerFechaTurnosDisponibles);
 

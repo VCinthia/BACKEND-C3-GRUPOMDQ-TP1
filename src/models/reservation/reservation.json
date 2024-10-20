@@ -3,7 +3,7 @@
     "id": 4,
     "numMesa": 1,
     "fechaDeTurno": "2024-10-18T21:00:00.000Z",
-    "estado": "Confirmado",
+    "estado": "Confirmada",
     "nombreCliente": "Brad Grant",
     "comentario": "Vegetariana",
     "usernameUsuarioCreador": "juan.perez@example.com"
@@ -18,48 +18,39 @@
     "usernameUsuarioCreador": "juan.perez@example.com"
   },
   {
-    "id": 6,
-    "numMesa": "5",
-    "fechaDeTurno": "2024-10-20T22:00:00.000Z",
-    "estado": "Pendiente",
-    "nombreCliente": "Matias Garnica",
-    "comentario": "-",
-    "usernameUsuarioCreador": "juan.perez@example.com"
-  },
-  {
     "id": 7,
     "numMesa": "5",
     "fechaDeTurno": "2024-10-20T22:00:00.000Z",
-    "estado": "Confirmado",
+    "estado": "Confirmada",
     "nombreCliente": "Juan Gomez",
     "comentario": "---",
-    "usernameUsuarioCreador": "juan.perez@example.com"
-  },
-  {
-    "id": 8,
-    "numMesa": "3",
-    "fechaDeTurno": "2024-10-20T20:00:00.000Z",
-    "estado": "Pendiente",
-    "nombreCliente": "Juan Gomez",
-    "comentario": "Ninguno",
     "usernameUsuarioCreador": "juan.perez@example.com"
   },
   {
     "id": 9,
     "numMesa": "5",
     "fechaDeTurno": "2024-10-20T21:00:00.000Z",
-    "estado": "Pendiente",
+    "estado": "Confirmada",
     "nombreCliente": "Carlos Acuña",
     "comentario": "Vegano",
     "usernameUsuarioCreador": "juan.perez@example.com"
   },
   {
     "id": 10,
-    "numMesa": "5",
-    "fechaDeTurno": "2024-10-20T22:00:00.000Z",
+    "numMesa": "2",
+    "fechaDeTurno": "2024-10-21T21:00:00.000Z",
     "estado": "Pendiente",
-    "nombreCliente": "Carlos Rodriguez",
-    "comentario": "Ojala que funcione",
+    "nombreCliente": "Maria García",
+    "comentario": "Sin lactosa",
+    "usernameUsuarioCreador": "carlos.rodriguez@example.com"
+  },
+  {
+    "id": 11,
+    "numMesa": "3",
+    "fechaDeTurno": "2024-10-21T22:00:00.000Z",
+    "estado": "Pendiente",
+    "nombreCliente": "Juan Gomez",
+    "comentario": "Celíaco",
     "usernameUsuarioCreador": "carlos.rodriguez@example.com"
   }
 ]

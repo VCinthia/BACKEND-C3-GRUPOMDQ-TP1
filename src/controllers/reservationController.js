@@ -80,7 +80,9 @@ export async function eliminarReserva (req, res) {
 export async function obtenerFechaTurnosDisponibles (req, res) {
     try {
         const fechaTurnosDisponibles = await reservationService.getFechaTurnosDisponibles();
-        res.render('newReservation', {fechasDisponibles: fechaTurnosDisponibles, user: req.session.user})
+        console.log("Fechas disponibles:", fechaTurnosDisponibles)
+        res.render('newReservation', {fechasDisponibles: fechaTurnosDisponibles, user: req.session.user}
+        )
     } catch (error) {
         console.error("Error en el controlador:", error);
         if (error.isClientError) {

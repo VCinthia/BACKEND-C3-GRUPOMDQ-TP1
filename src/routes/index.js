@@ -1,4 +1,3 @@
-//var express = require('express');
 import express from 'express';
 
 
@@ -10,8 +9,6 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
-
-//module.exports = router;
 export default router;
 
 
