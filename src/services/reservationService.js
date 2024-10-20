@@ -12,10 +12,8 @@ export async function crearReserva(reservationData) {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
     const reservasFilePath = path.join(__dirname,"../models/reservation/reservation.json");
-    console.log(" camino: ",reservasFilePath);
     // Leer las reservas existentes
     const reservasEnBase = await functions.leerArchivoJSON(reservasFilePath); //retorna un Object
-    console.log("BASE:", reservasEnBase);
 
     // Generar el nuevo ID y crear la nueva reserva
     const nuevoId = functions.generarNuevoId(reservasEnBase);
@@ -23,7 +21,6 @@ export async function crearReserva(reservationData) {
     if(!nuevaReserva){
         return;
     }
-    console.log("Nueva Reserva:", nuevaReserva);
 
     // Agregar la nueva reserva al array de reservas
     reservasEnBase.push(nuevaReserva);
@@ -40,7 +37,7 @@ export async function crearReserva(reservationData) {
 
 
 
-export async function getReservasPorTipoUsuario(username) {
+export async function getReservasPorRolUsuario(username) {
   try {
     // Obtener la ruta del archivo de reservas
     const __filename = fileURLToPath(import.meta.url);
@@ -49,32 +46,26 @@ export async function getReservasPorTipoUsuario(username) {
     const reservasFilePath = path.join(__dirname,"../models/reservation/reservation.json");
     // Leer las reservas existentes
     const reservasEnBase = await functions.leerArchivoJSON(reservasFilePath); //retorna un Object
-    console.log("ReservasBASE:", reservasEnBase);
 
     // Filtro por tipo:
     const usuariosEnBase = await functions.leerArchivoJSON(usuariosFilePath);
-    console.log("UsuariosBASE:", usuariosEnBase);
     const usuarioEncontrado = buscarUsuarioPorUsername(usuariosEnBase, username);
     if(!usuarioEncontrado){
-        return { message: `No se encontró ningún usuario registrado con el username proporcionado.`};
+      throw {
+        isClientError: true,
+        message: `No se encontró ningún usuario registrado con el username: ${username}`};
     }
-    console.log("UsuariosEncontrado:", usuarioEncontrado);
+
     let reservasSelected;
     if(usuarioEncontrado.rol === UserRol.CLIENTE){
         reservasSelected = filtrarReservasPorUsername(reservasEnBase, username);
     }else if (usuarioEncontrado.rol === UserRol.PERSONAL){
         reservasSelected = reservasEnBase;
     }
-    console.log("ReservasSElec:", reservasSelected);
-
-    if(reservasSelected.length === 0){
-        return { message: `No se encontró ninguna reserva registrada por el usuario: ${username} `};
-    }
-    console.log("Reservas Selected:", reservasSelected);
 
     return reservasSelected; // Retornar la nueva reserva
   } catch (error) {
-    console.error("Error al  buscar las reservas:", error);
+    console.error("Error al  obtener las reservas:", error);
     throw error;
   }
 }
@@ -83,13 +74,19 @@ export async function getReservasPorTipoUsuario(username) {
 
 export async function actualizarEstado(idReserva, nuevoEstado) {
     try {
+      //ValidacionEStado
+      if(!esEstadoValido(nuevoEstado)){
+        throw {
+          isClientError: true,
+          message: `El estado: ${nuevoEstado} , no es un valor válido`};
+      }
+
       // Obtener la ruta del archivo de reservas
       const __filename = fileURLToPath(import.meta.url);
       const __dirname = path.dirname(__filename);
       const reservasFilePath = path.join(__dirname,"../models/reservation/reservation.json");
       // Leer las reservas existentes
       const reservasEnBase = await functions.leerArchivoJSON(reservasFilePath); //retorna un Object
-      console.log("ReservasBASE:", reservasEnBase);
 
       // Buscar la reserva por id
       const reservaIndex = reservasEnBase.findIndex((reserva) => reserva.id == idReserva);
@@ -99,13 +96,12 @@ export async function actualizarEstado(idReserva, nuevoEstado) {
       //Actualizo estado:
       // Buscar el índice del objeto que tenga el id que coincide
       reservasEnBase[reservaIndex].estado = nuevoEstado;
-      console.log("ReservasActualizadas: ", reservasEnBase);
 
       // Guardar las reservas actualizadas en el archivo
       await functions.escribirArchivoJSON(reservasFilePath, reservasEnBase);
       return  reservasEnBase; // Retornar todas las reservas
     } catch (error) {
-      console.error("Error al  buscar las reservas:", error);
+      console.error("Error al actualizar Estado: ", error);
       throw error;
     }
   }
@@ -120,7 +116,6 @@ export async function actualizarEstado(idReserva, nuevoEstado) {
       const reservasFilePath = path.join(__dirname,"../models/reservation/reservation.json");
       // Leer las reservas existentes
       const reservasEnBase = await functions.leerArchivoJSON(reservasFilePath); //retorna un Object
-      console.log("ReservasBASE:", reservasEnBase);
 
       // Buscar la reserva por id
       const reservaIndex = reservasEnBase.findIndex((reserva) => reserva.id == idReserva);
@@ -130,7 +125,6 @@ export async function actualizarEstado(idReserva, nuevoEstado) {
       //Elimino Objeto
       // Buscar el índice del objeto que tenga el id que coincide
       const reservaEliminada = reservasEnBase.splice(reservaIndex, 1)
-      console.log("ReservasActualizadas: ", reservasEnBase);
       // Guardar las reservas actualizadas en el archivo
       await functions.escribirArchivoJSON(reservasFilePath, reservasEnBase);
       return  reservasEnBase; // Retornar las reservas que quedaron
@@ -151,11 +145,8 @@ export async function actualizarEstado(idReserva, nuevoEstado) {
       const reservasEnBase = await functions.leerArchivoJSON(reservasFilePath); //retorna un Object
       const reservasActivas = getReservasActivas(reservasEnBase);
       
-      console.log("ReservasActivas:", reservasActivas);
       const totalTurnos = obtenerTotalDeturnos();
       const turnosDisponibles = eliminarTurnosOcupados(totalTurnos, reservasActivas)
-
-      console.log("TurnosDisponibles", turnosDisponibles);
   
       return turnosDisponibles; // Retornar la nueva reserva
     } catch (error) {
@@ -210,12 +201,16 @@ function obtenerTotalDeturnos(){
             totalDeTurnos.push({ mesa, turno });
         });
     });
-    console.log("TotalTurnos: ",totalDeTurnos);
     return totalDeTurnos;
 }
 
 function getReservasActivas(reservas ){
     return reservas.filter(reserva => 
-         reserva.estado != ReservationState.CANCELADA);
+         reserva.estado != ReservationState.CANCELADA && reserva.estado != ReservationState.CANCELADA );
+}
+
+
+function esEstadoValido(nuevoEstado) {
+  return (Object.values(ReservationState).includes(nuevoEstado));
 }
 
