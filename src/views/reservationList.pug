@@ -26,7 +26,7 @@ html
                         td= reserva.estado || 'Estado no disponible'
                         td= reserva.comentario || 'Sin comentarios.'
                         td
-                            button(type='button',onclick=`actualizarEstadoReserva(${reserva.id}, 'Confirmada')`,class=reserva.estado === 'Confirmada' ? 'btnDisabled': '', disabled=reserva.estado === 'Confirmada').btnConfirm Confirmar
+                            button(type='button', onclick=`actualizarEstadoReserva(${reserva.id}, 'Confirmada')`, class=reserva.estado === 'Confirmada' || reserva.estado === 'Cancelada' ? 'btnDisabled': '', disabled=reserva.estado === 'Confirmada' || reserva.estado === 'Cancelada').btnConfirm Confirmar
                             button(type='button', onclick=`actualizarEstadoReserva(${reserva.id}, 'Cancelada')`,class=reserva.estado === 'Cancelada' ? 'btnDisabled' : '', disabled=reserva.estado === 'Cancelada').btnCancel Cancelar
                             button(type='button', onclick=`eliminarReserva(${reserva.id})`).btnDelete Eliminar
 
