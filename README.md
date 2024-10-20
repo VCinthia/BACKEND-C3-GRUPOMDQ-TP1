@@ -15,6 +15,9 @@ Este proyecto entregable 1 es una aplicación que responde al Caso 3 para gestio
 
 https://github.com/VCinthia/BACKEND-C3-GRUPOMDQ-TP1
 
+1. [Repositorio](https://github.com/VCinthia/BACKEND-C3-GRUPOMDQ-TP1)
+2. [Issues](https://github.com/VCinthia/BACKEND-C3-GRUPOMDQ-TP1/issues?q=is%3Aissue+is%3Aclosed)
+
 ## Estructura del Proyecto
 
 La aplicación está organizada en varias carpetas según las responsabilidades del sistema, incluyendo controladores, modelos, rutas, servicios, vistas, utilidades y configuraciones.
@@ -208,5 +211,19 @@ El archivo `.env` incluye las variables de entorno que deben ser configuradas pa
 
 3. **Acceder al proyecto**:
    El servidor estará corriendo en `http://localhost:3000/api`.
+
+### Fuentes:
+
+A continuación, se listan las bibliotecas y herramientas utilizadas en el desarrollo de este proyecto:
+
+1. [Node.js](https://nodejs.org/en/): Entorno de ejecución de JavaScript para el backend.
+2. [Express.js](https://expressjs.com/): Framework web minimalista para Node.js.
+3. [Pug](https://pugjs.org/api/getting-started.html): Motor de plantillas utilizado para generar vistas HTML.
+4. [dotenv](https://www.npmjs.com/package/dotenv): Módulo para cargar variables de entorno desde archivos `.env`.
+5. [File System (fs)](https://nodejs.org/api/fs.html): Módulo nativo de Node.js para interactuar con el sistema de archivos.
+6. [Nodemon](https://nodemon.io/): Herramienta para reiniciar el servidor automáticamente en modo desarrollo.
+7. [Luxon](https://moment.github.io/luxon/): Biblioteca para manipulación de fechas y horas.
+8. [JSON](https://www.json.org/json-en.html): Formato de intercambio de datos utilizado para almacenar y transferir información.
+9. [Aprende Node.js y Express - Curso desde Cero](https://www.youtube.com/watch?v=1hpc70_OoAg): Fundamentos de Node.js y Express
 
 ---
