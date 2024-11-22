@@ -110,14 +110,14 @@ export async function eliminarReservaPorId(idReserva) {
 export async function getFechaTurnosDisponibles() {
   try {
     // Obtener las reservas activas directamente desde MongoDB
-    const reservasActivas = await Reservation.find({ estado: "ACTIVO" });
+    const reservasActivas = await Reservation.find({ 
+      estado: { $in: [ReservationState.PENDIENTE, ReservationState.CONFIRMADA, ReservationState.COMPLETADA] }
+    });
 
+    console.log('activas: ', reservasActivas)
     const totalTurnos = obtenerTotalDeturnos();
-    const turnosDisponibles = eliminarTurnosOcupados(
-      totalTurnos,
-      reservasActivas
-    );
-
+    const turnosDisponibles = eliminarTurnosOcupados(totalTurnos,reservasActivas);
+    console.log('disponibles: ', turnosDisponibles)
     return turnosDisponibles; // Retornar la nueva reserva
   } catch (error) {
     console.error("Error al obtener los turnos disponibles:", error);
@@ -125,34 +125,24 @@ export async function getFechaTurnosDisponibles() {
   }
 }
 
-export function filtrarReservasPorUsername(reservas, username) {
-  return reservas.filter(
-    (reserva) => reserva.usernameUsuarioCreador === username
-  );
-}
 
-export function filtrarReservasPorId(reservas, id) {
-  return reservas.filter((reserva) => reserva.id == id);
-}
+
 
 //METODOS PRIVADOS
 
 function eliminarTurnosOcupados(totalDeTurnos, reservasActivas) {
-  // Crear un conjunto para almacenar las combinaciones de mesa y fecha ocupadas
-  const ocupados = new Set();
-
-  // Llenar el conjunto con las reservas activas
-  reservasActivas.forEach((reserva) => {
-    const clave = `${reserva.numMesa}|${reserva.fechaDeTurno}`;
-    ocupados.add(clave);
-  });
-
-  // Filtrar los turnos que no están ocupados
-  return totalDeTurnos.filter((turno) => {
-    const claveTurno = `${turno.mesa}|${turno.turno}`;
-    return !ocupados.has(claveTurno);
-  });
+  const turnosReservados = new Set(
+    reservasActivas.map(
+      (reserva) =>
+        `${reserva.numMesa}-${new Date(reserva.fechaDeTurno).toISOString()}`
+    )
+  );
+  const turnosActualizados = totalDeTurnos.filter(
+    (turno) => !turnosReservados.has(`${turno.mesa}-${turno.turno}`)
+  );
+  return turnosActualizados;
 }
+
 
 function obtenerTotalDeturnos() {
   const totalDeTurnos = [];
@@ -169,14 +159,15 @@ function esEstadoValido(nuevoEstado) {
 }
 
 async function esFechaTurnoValido(fechaDeTurno, numeroMesa) {
-  // Obtener los turnos disponibles
   const turnosDisponibles = await getFechaTurnosDisponibles();
-  const turnosDisponiblesSet = new Set();
-  turnosDisponibles.forEach((turno) => {
-    const clave = `${turno.mesa}|${turno.turno}`;
-    turnosDisponiblesSet.add(clave);
-  });
-  const claveTurnoAValidar = `${numeroMesa}|${fechaDeTurno}`;
-  const existeFecha = turnosDisponiblesSet.has(claveTurnoAValidar);
+
+ // Buscar el turno en el array de turnos disponibles
+ const existeFecha = turnosDisponibles.find(turno => 
+  turno.mesa == numeroMesa && turno.turno == fechaDeTurno
+);
+
+
+
+  console.log("existe fecha: ", existeFecha);
   return existeFecha;
 }
