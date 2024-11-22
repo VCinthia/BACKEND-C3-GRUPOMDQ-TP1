@@ -28,9 +28,18 @@ const reservationSchema = new Schema({
         type: String,
         required: false 
     },
+    // Referencia al usuario creador
     usernameUsuarioCreador: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Referencia al modelo User
+        required: true,
+        validate: {
+            validator: async function(v) {
+                const user = await User.findOne({ username: v });
+                return !!user; // Si el usuario con ese username existe, devuelve true
+            },
+            message: props => `El usuario con username ${props.value} no existe en la base de datos.`
+        }
     }
 }, { timestamps: true }); // campos createdAt y updatedAt
 

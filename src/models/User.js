@@ -1,4 +1,4 @@
-import { UserRol } from "../../core/enums.js";
+import { UserRol } from "../core/enums.js";
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 

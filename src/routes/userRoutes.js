@@ -3,6 +3,9 @@ import * as userController from '../controllers/userController.js';
 const routerUser = express.Router();
 
 
+
+routerUser.post('/', userController.crearUsuario);
+
 // Ruta para login (Obtener usuario según credenciales)
 routerUser.post('/login', userController.loginUser);
 

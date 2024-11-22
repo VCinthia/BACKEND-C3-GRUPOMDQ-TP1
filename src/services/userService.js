@@ -1,41 +1,26 @@
-import UserModel from "../models/user/Users.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import * as functions from "../utils/function.js";
+import User from "../models/User.js";
 
-export function crearUsuario(usuarioCreador) {
-  //todo: agregar validacion que no se agregue un usuario con el mismo "username" que es la PK
+
+export async function crearUsuario(usuarioCreador) {
   const { nombre, apellido, username, rol, contrasenia } = usuarioCreador;
-  return new UserModel(nombre, apellido, username, rol, contrasenia);
-}
 
-/**
- * Busca un Usuario registrado que coincida con el username
- * @param {Array<Object>} usuarios
- * @param {String} username
- * @returns Si hay una coincidencia retorna el Objeto User, de lo contrario retorna Undefined
- */
-export function buscarUsuarioPorUsername(usuarios, username) {
-  return usuarios.find((usuario) => usuario.username == username);
-}
-
-export async function usuarioExiste(usernameUsuarioCreador) {
   try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const usuariosFilePath = path.join(__dirname, "../models/user/user.json");
-    const usuariosEnBase = await functions.leerArchivoJSON(usuariosFilePath);
-
-    const usuarioIndex = usuariosEnBase.findIndex(
-      (usuario) => usuario.username === usernameUsuarioCreador
-    );
-    if (usuarioIndex == -1) {
-      //sino encuentra coincidencia ,devuelve -1
-      return false;
+    const usuarioExistente = await User.findOne({ username });
+    if (usuarioExistente) {
+      throw new Error(`El nombre de usuario ${username} ya está en uso.`);
     }
-    return true;
+
+    // Crear un nuevo usuario usando el modelo de Mongoose
+    const nuevoUsuario = new User(usuarioCreador);
+    await nuevoUsuario.save();
+
+    return nuevoUsuario; // Retorna el usuario creado
   } catch (error) {
-    console.error("Error al validar usuario:", error);
+    console.error("Error al crear el usuario:", error);
     throw error;
   }
 }
+
