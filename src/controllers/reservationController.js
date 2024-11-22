@@ -28,8 +28,17 @@ export async function crearReserva( req, res) {
         if (error.isClientError) {
             return res.status(error.statusCode || 400).json({ message: error.message });
         }
+        
+        // Si el error es de validación de Mongoose 
+        if (error.name === 'ValidationError') {
+        if (error.errors && error.errors.usernameUsuarioCreador) {
+           return res.status(400).send({
+        message: error.errors.usernameUsuarioCreador.message,  
+         });
+        }
+
         return res.status(500).json({ message: MSG_ERROR_500});
-    }
+    }}
 };
 
 

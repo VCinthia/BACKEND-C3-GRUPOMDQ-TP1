@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { ReservationMesa, ReservationState } from '../core/enums.js';
 import { Schema } from 'mongoose';
+import User from './User.js';
 
 
 
@@ -29,17 +30,17 @@ const reservationSchema = new Schema({
         required: false 
     },
     // Referencia al usuario creador
-    usernameUsuarioCreador: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Referencia al modelo User
-        required: true,
-        validate: {
-            validator: async function(v) {
-                const user = await User.findOne({ username: v });
-                return !!user; // Si el usuario con ese username existe, devuelve true
-            },
-            message: props => `El usuario con username ${props.value} no existe en la base de datos.`
-        }
+usernameUsuarioCreador: {
+    type: String,
+    required: true,
+    validate: {
+      validator: async function (v) {
+        // Validación para verificar si el username existe en la base de datos
+        const user = await User.findOne({ username: v });
+        return user !== null;  // Devuelve true si el usuario existe
+      },
+      message: (props) => `El usuario con username ${props.value} no existe en la base de datos.`,
+    }
     }
 }, { timestamps: true }); // campos createdAt y updatedAt
 
