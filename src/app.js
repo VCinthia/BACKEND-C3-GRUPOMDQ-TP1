@@ -8,57 +8,71 @@ import indexRouter from './routes/index.js';
 import userRouters from './routes/userRoutes.js';
 import reservationRoutes from './routes/reservationRoutes.js';
 import { fileURLToPath } from 'url';
-import dotnet from 'dotenv'
 import { baseAPI } from './core/const.js';
 import session from 'express-session';
+import 'dotenv/config';  //reconoce variables de entorno
+import connectDB from './config/database.js';
 
 
+
+
+
+
+
+
+// Initializations
 const app = express();
-const PUERTO = process.env.PORT || 3000;
-
-
-// Simular __dirname
+const mongoURI = process.env.MONGODB_URI;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-//lo coloqué antes de las rutas y cambié a true para que se pueda enviar el form del login
-app.use(express.urlencoded({ extended: true }));
 
 
-//datos de sesión
-
-app.use(session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 60 * 60 * 1000 } // 1 hora
-}));
-
-// view engine setup
+// Settings
+app.set('port', process.env.PORT || 3000); 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+connectDB();
 
 
-app.use(logger('dev'));
-app.use(express.json());  // Middleware para analizar el cuerpo de la solicitud
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '..', 'public')));
 
-//DEFINICION DE RUTAS
+// Midelwares
+app.use(logger('dev'));  // Logger de peticiones
+app.use(express.json());  // Parsear JSON en las solicitudes
+app.use(express.urlencoded({ extended: true }));  // Para manejar formularios
+app.use(cookieParser());  // Manejar cookies
+app.use(session({  // datos de sesión
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60 * 60 * 1000 } // 1 hora
+}));
+
+
+
+
+// Routes
 app.use(baseAPI+'/', indexRouter);
 app.use(baseAPI+'/users', userRouters);
 app.use(baseAPI+'/reservations', reservationRoutes);
 
+
+// Ruta principal
 app.get('/main', (req, res) => {
-  res.render('main', { user: req.session.user }); // Renderiza la vista principal
+  res.render('main', { user: req.session.user }); 
 });
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+
+//Static Files
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
+
+
+// Manejo de errores
+app.use(function(req, res, next) {  // catch 404 and forward to error handler
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
@@ -70,9 +84,11 @@ app.use(function(err, req, res, next) {
 });
 
 
-//INICIO DEL SERVIDOR
-app.listen(PUERTO, () => {//VER SI HAY QUE CAMBIARLO PARA RENDERIZAR EN EL NAVEGADOR
-  console.log(`Servidor escuchando en http://localhost:${PUERTO}/api`);
+
+
+// Server is lisening
+app.listen(app.get('port'), () => {
+  console.log(`Servidor escuchando en http://localhost:${app.get('port')}`);
 });
 
 

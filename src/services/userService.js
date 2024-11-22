@@ -1,4 +1,4 @@
-import UserModel from "../models/user/User.js";
+import UserModel from "../models/user/Users.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import * as functions from "../utils/function.js";

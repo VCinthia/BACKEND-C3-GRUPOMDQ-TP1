@@ -1,5 +1,3 @@
-import { UserRol } from "../../core/enums.js";
-
 export default class User  {
   #nombre;
   #apellido;

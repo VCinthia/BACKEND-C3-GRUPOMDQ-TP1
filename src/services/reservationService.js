@@ -5,6 +5,8 @@ import * as functions from "../utils/function.js";
 import { usuarioExiste, buscarUsuarioPorUsername } from "../services/userService.js";
 import { ReservationMesa, ReservationTurnos,ReservationState, UserRol } from "../core/enums.js";
 import { DateTime } from 'luxon';
+import Reservation from '../models/Reservation.js';
+
 
 export async function crearReserva(reservationData) {
   try {
@@ -17,26 +19,9 @@ export async function crearReserva(reservationData) {
       };
     }
 
-    // Obtener la ruta del archivo de reservas
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const reservasFilePath = path.join(__dirname,"../models/reservation/reservation.json");
-    // Leer las reservas existentes
-    const reservasEnBase = await functions.leerArchivoJSON(reservasFilePath); //retorna un Object
-
-    // Generar el nuevo ID y crear la nueva reserva
-    const nuevoId = functions.generarNuevoId(reservasEnBase);
-    const nuevaReserva = await crearNuevaReserva(nuevoId, reservationData);
-    if(!nuevaReserva){
-        return;
-    }
-
-    // Agregar la nueva reserva al array de reservas
-    reservasEnBase.push(nuevaReserva);
-
-    // Guardar las reservas actualizadas en el archivo
-    await functions.escribirArchivoJSON(reservasFilePath, reservasEnBase);
-
+    console.log('reuestBody: ', reservationData)
+    const nuevaReserva = new Reservation(reservationData);
+    await nuevaReserva.save();
     return nuevaReserva; // Retornar la nueva reserva
   } catch (error) {
     console.error("Error al crear la reserva:", error);
