@@ -158,16 +158,12 @@ function esEstadoValido(nuevoEstado) {
   return Object.values(ReservationState).includes(nuevoEstado);
 }
 
+
 async function esFechaTurnoValido(fechaDeTurno, numeroMesa) {
   const turnosDisponibles = await getFechaTurnosDisponibles();
-
  // Buscar el turno en el array de turnos disponibles
  const existeFecha = turnosDisponibles.find(turno => 
   turno.mesa == numeroMesa && turno.turno == fechaDeTurno
 );
-
-
-
-  console.log("existe fecha: ", existeFecha);
   return existeFecha;
 }

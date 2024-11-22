@@ -32,33 +32,3 @@ export async function leerArchivoJSON(filePath) {
     }
 }
 
-
-/**
- * Ecribe un archivo JSON
- * @param {String} filePath 
- * @param {Object} nuevoContenido 
- */
-export async function escribirArchivoJSON(filePath, nuevoContenido) {
-    try {
-        const nuevoContenidoJSON = JSON.stringify(nuevoContenido, null, 2);
-        await fs.writeFile(filePath, nuevoContenidoJSON);
-    } catch (error) {
-        console.error('Error al escribir el archivo de reservas:', error);
-        throw error;
-    }
-}
-
-
-
-/**
- * Genera el próximo ID para un array de objetos que contienen una propiedad "id".
- * @param {Array<Object>} objetosConId - Un array de objetos, cada uno con una propiedad "id".
- * @returns {number} el número del id correlavito al ultimo objeto
- */
-export function generarNuevoId(objetosConId) {
-    if (objetosConId.length > 0) {
-        const ultimoObjeto = objetosConId[objetosConId.length - 1];
-        return ultimoObjeto.id + 1;
-    }
-    return 1; // Si el array está vacío, el ID será 1
-}

@@ -1,4 +1,4 @@
-import { leerArchivoJSON, escribirArchivoJSON } from "../utils/function.js";
+import { leerArchivoJSON} from "../utils/function.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import * as userService from "../services/userService.js";
@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const usersFilePath = path.join(__dirname, "../models/user/user.json");
 
-// Login de usuario
+// Login de usuario - todo: refactor, no usar JSON
 export const loginUser = async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -25,7 +25,7 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// Logout de usuario
+// Logout de usuario 
 export const logoutUser = (req, res) => {
   req.session.destroy((err) => {
     if (err) return res.status(500).send("Error al cerrar sesión");
