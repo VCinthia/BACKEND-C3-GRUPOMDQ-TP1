@@ -113,11 +113,8 @@ export async function getFechaTurnosDisponibles() {
     const reservasActivas = await Reservation.find({ 
       estado: { $in: [ReservationState.PENDIENTE, ReservationState.CONFIRMADA, ReservationState.COMPLETADA] }
     });
-
-    console.log('activas: ', reservasActivas)
     const totalTurnos = obtenerTotalDeturnos();
     const turnosDisponibles = eliminarTurnosOcupados(totalTurnos,reservasActivas);
-    console.log('disponibles: ', turnosDisponibles)
     return turnosDisponibles; // Retornar la nueva reserva
   } catch (error) {
     console.error("Error al obtener los turnos disponibles:", error);

@@ -1,6 +1,3 @@
-import { fileURLToPath } from "url";
-import path from "path";
-import * as functions from "../utils/function.js";
 import User from "../models/User.js";
 
 
@@ -23,4 +20,6 @@ export async function crearUsuario(usuarioCreador) {
     throw error;
   }
 }
+
+
 
