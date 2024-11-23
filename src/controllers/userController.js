@@ -70,3 +70,30 @@ export async function crearUsuario(req, res) {
     return res.status(500).json({ message: error.message });
   }
 }
+
+// Obtener todos los usuarios
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find(); // Recupera todos los usuarios
+    res.status(200).json(users); // Devuelve los usuarios como JSON
+  } catch (error) {
+    console.error("Error al obtener los usuarios:", error);
+    res.status(500).json({ message: "Error al obtener los usuarios" });
+  }
+};
+
+// Eliminar un usuario por ID
+export const deleteUserById = async (req, res) => {
+  const { id } = req.params; // Obtiene el ID desde los parámetros de la ruta
+
+  try {
+    const user = await User.findByIdAndDelete(id); // Busca y elimina el usuario por ID
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    res.status(200).json({ message: `Usuario con ID ${id} eliminado` });
+  } catch (error) {
+    console.error("Error al eliminar el usuario:", error);
+    res.status(500).json({ message: "Error al eliminar el usuario" });
+  }
+};

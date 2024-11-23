@@ -12,5 +12,10 @@ routerUser.post('/login', userController.loginUser);
 // Ruta para logout (Eliminar usuario de la sesión)
 routerUser.post('/logout', userController.logoutUser);
 
+// Obtener todos los usuarios
+routerUser.get('/', userController.getAllUsers);
+
+// Eliminar un usuario por ID
+routerUser.delete('/:id', userController.deleteUserById);
 
 export default routerUser;
