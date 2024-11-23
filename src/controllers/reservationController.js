@@ -47,6 +47,7 @@ export async function obtenerReservasPorRolDeUsuario (req, res) {
     try {
         const reservas = await reservationService.getReservasPorRolUsuario(req.params.username);
 
+        console.log(reservas)
         if(!reservas || reservas.length === 0){
             return res.status(404).json({ message: 'No se encontraron reservas' });
         }
@@ -60,6 +61,7 @@ export async function obtenerReservasPorRolDeUsuario (req, res) {
         if (error.isClientError) {
             return res.status(error.statusCode || 400).json({ message: error.message });
         }
+        console.log(error)
         return res.status(500).json({ message: MSG_ERROR_500});
     }
 };
