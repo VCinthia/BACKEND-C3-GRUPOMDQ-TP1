@@ -1,47 +1,30 @@
 [
   {
-    "_id": "67422e11bcccc7a7b4f97968",
     "nombre": "Juan",
     "apellido": "Pérez",
-    "username": "jp",
-    "rol": "Personal",
-    "password": "$2b$10$qp3OpfHeAf2PKQy/VMdGg.Tt.uoni40KcO8KaFRJ7nI3rHbasLgq6",
-    "__v": 0
-  },
-  {
-    "_id": "67422e28bcccc7a7b4f9796b",
-    "nombre": "a",
-    "apellido": "a",
-    "username": "a",
-    "rol": "Personal",
-    "password": "$2b$10$avpvgI9worgNEjj/A8FtBusLfm2QpgwjnPoCwv0/3caTmUuQhA4Bm",
-    "__v": 0
-  },
-  {
-    "_id": "67422e8fbcccc7a7b4f9796f",
-    "nombre": "Ana",
-    "apellido": "García",
-    "username": "ana.garcia@example.com",
+    "username": "juan.perez@example.com",
     "rol": "Cliente",
-    "password": "$2b$10$q/jIPUaFP.qchaNToQFpxuqZrPpqPIR397Xl8WJOgDA7IDheR/3gS",
-    "__v": 0
+    "password": "juanperez"
   },
   {
-    "_id": "67422e9bbcccc7a7b4f97972",
-    "nombre": "Carlos",
-    "apellido": "Rodríguez",
-    "username": "carlos.rodriguez@example.com",
-    "rol": "Personal",
-    "password": "$2b$10$yeZZBgNr/faeiyRPqs0rEu9/GMxTBan73IgPEA2hPZ7pFHqtcjDXO",
-    "__v": 0
+      "nombre": "Ana",
+      "apellido": "García",
+      "username": "ana.garcia@example.com",
+      "rol": "Cliente",
+      "password": "anagarcia"
   },
   {
-    "_id": "67422ea4bcccc7a7b4f97975",
+      "nombre": "Carlos",
+      "apellido": "Rodríguez",
+      "username": "carlos.rodriguez@example.com",
+      "rol": "Personal",
+      "password": "carlosrodriguez"
+  },    
+  {
     "nombre": "María",
     "apellido": "López",
     "username": "maria.lopez@example.com",
     "rol": "Personal",
-    "password": "$2b$10$Q3MlrM7iK7gYwo6JmT1oVeoodxLLdcU/m7xXJ/ReATqeJXmY52T.u",
-    "__v": 0
+    "password": "marialopez"
   }
 ]
