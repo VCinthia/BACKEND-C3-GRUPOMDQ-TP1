@@ -1,16 +1,18 @@
 doctype html
 html
     head
+        script(src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js")
         title Gestión de Reservas
         link(rel='stylesheet', href='/stylesheets/style.css') 
     body
         h1 Gestión de Reservas 
-        if user
-            h2 Bienvenido, #{user.nombre}!
+        if token
+            h2 Bienvenido, #{token} !
         else
             h2 Bienvenido invitado!
+            
         div.button-container
-            button(onclick=`location.href='/api/reservations/${user.username}'`) Ver Mis Reservas 
+            button(onclick=`location.href='/api/reservations`) Ver Mis Reservas 
             button(onclick=`location.href='/api/reservations/disponibles'`) Agregar Reserva
         div.logout
             form(action='/api/users/logout', method='POST', onsubmit='confirmarCerrarSesion(event)')
@@ -21,4 +23,12 @@ html
                 if (!confirm("¿Deseas cerrar sesión?")) {
                     event.preventDefault();
                 }
+            };
+
+            if (token) {
+                
+                console.log('Token decodificado:', decoded);
+                // Aquí puedes mostrar datos del usuario en la página usando decoded
+            } else {
+                console.log('No se encontró el token.');
             }

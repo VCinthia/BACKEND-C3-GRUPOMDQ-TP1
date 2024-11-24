@@ -59,7 +59,8 @@ app.use(baseAPI+'/reservations', reservationRoutes);
 
 // Ruta principal
 app.get('/main', (req, res) => {
-  res.render('main', { user: req.session.user }); 
+  const token= req.cookies.token;
+  res.render('main', { token: token }); 
 });
 
 
