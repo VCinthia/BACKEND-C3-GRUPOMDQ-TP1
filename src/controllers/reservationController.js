@@ -2,6 +2,7 @@ import * as reservationService from '../services/reservationService.js';
 const MSG_ERROR_500 = 'Error interno del servidor. Por favor, inténtalo de nuevo más tarde.';
 const HEADER_ACCEPT = 'accept';
 const ACCEPT_POSTMAN = '*/*';
+import jwt from 'jsonwebtoken'
 
 export async function crearReserva( req, res) {
     try {
@@ -111,8 +112,17 @@ export async function obtenerFechaTurnosDisponibles (req, res) {
         if (req.get(HEADER_ACCEPT) === ACCEPT_POSTMAN) { //valor seteado desde Postman
             return res.json(fechaTurnosDisponibles);
         }
+        const token= req.cookies.token;
+        if (!token) {
+            return res.status(403).send('Acceso no autorizado')
+        }
+        try {
+            const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
+            return res.render('newReservation', {fechasDisponibles: fechaTurnosDisponibles, user: data});
+        } catch (error) {
+            return res.status(403).send('Acceso no autorizado 2')
+        }
 
-        return res.render('newReservation', {fechasDisponibles: fechaTurnosDisponibles, user: req.session.user});
     } catch (error) {
         console.error("Error en el controlador:", error);
         if (error.isClientError) {
