@@ -1,20 +1,21 @@
 
-# TP1 GrupoMDQ - Caso 3 | Entrega 1
+# TP1 GrupoMDQ - Caso 3 | Entrega 2
 
-Este proyecto entregable 1 es una aplicación que responde al Caso 3 para gestionar reservas y usuarios en un restaurante.
+Este proyecto entregable 2 es una aplicación que responde al Caso 3 para gestionar reservas y usuarios en un restaurante.
 
 ### Integrantes:
 
-- Cynthia Estefanía Choque Galindo | Controles, rutas de Reservation, Core y Service
-- Guido Vizzotti | Model de Reservation
-- Matías Garnica | Vistas
-- Mauricio Galera | Controles y rutas de User
-- Cinthia Romina Vota | Documentación, estructura y model de User
+- Cynthia Estefanía Choque Galindo | Controles, rutas de Reservation, Core y Service, configuración de MongoDB Atlas
+- Guido Vizzotti | Model de Reservation, implementación de tests con Jest
+- Matías Garnica | Vistas, implementación de autenticación JWT
+- Mauricio Galera | Controles y rutas de usuarios
+- Cinthia Romina Vota | Documentación, estructura y model de User, implementacion de bcrypt
 
 ### Repositorio GitHub:
 
 1. [Repositorio](https://github.com/VCinthia/BACKEND-C3-GRUPOMDQ-TP1)
-2. [Issues](https://github.com/VCinthia/BACKEND-C3-GRUPOMDQ-TP1/issues?q=is%3Aissue+is%3Aclosed)
+2. [Deploy Vercel](https://backend-c3-grupomdq-tp-1.vercel.app/api)
+
 
 ## Estructura del Proyecto
 
@@ -30,6 +31,8 @@ La aplicación está organizada en varias carpetas según las responsabilidades 
         └── 📁stylesheets
             └── style.css
     └── 📁src
+        └── 📁config
+            └── database.js
         └── 📁controllers
             └── reservationController.js
             └── userController.js
@@ -37,12 +40,8 @@ La aplicación está organizada en varias carpetas según las responsabilidades 
             └── const.js
             └── enums.js
         └── 📁models
-            └── 📁reservation
-                └── Reservation.js
-                └── reservation.json
-            └── 📁user
-                └── User.js
-                └── user.json
+            └── Reservation.js
+            └── User.js
         └── 📁routes
             └── index.js
             └── reservationRoutes.js
@@ -60,12 +59,16 @@ La aplicación está organizada en varias carpetas según las responsabilidades 
             └── reservationConfirmed.pug
             └── reservationList.pug
         └── app.js
+    └── 📁tests
+        └── crearReserva.spec.js
     └── .env
     └── .gitignore
+    └── .jest.config.js
     └── nodemon.json
     └── package-lock.json
     └── package.json
     └── README.md
+    └── vercel.json
 ```
 
 ### Descripción General
@@ -75,15 +78,13 @@ El sistema permite a los usuarios hacer, modificar y gestionar reservas en un re
 ### Entidades
 
 #### 1. **Users**
-- **Archivo JSON**: `user.json` contiene los datos de los usuarios, como `nombre`, `apellido`, `username`, `rol` y `contraseña`.
-   - **Ubicación**: `src/models/user/user.json`
-   - **Modelo**: Definido en `User.js`, que representa la clase `User` con sus atributos y métodos.
+- **ESTRUCTURA**: `nombre`, `apellido`, `username`, `rol` y `contraseña`.
+   - **Modelo**: Definido en `User.js`, que representa la clase `User`.
    - **Controlador**: `userController.js`, contiene la lógica para gestionar los usuarios (CRUD).
    - **Rutas**: Definidas en `userRoutes.js`.
 
 #### 2. **Reservations**
-- **Archivo JSON**: `reservation.json` almacena las reservas.
-   - **Ubicación**: `src/models/reservation/reservation.json`
+- **ESTRUCTURA**: `numMesa`, `fechaDeTurno`, `estado`, `nombreCliente`, `comentario` y `usernameUsuarioCreador`.
    - **Modelo**: Definido en `Reservation.js`, representa la clase `Reservation`.
    - **Controlador**: `reservationController.js`, contiene la lógica para gestionar las reservas.
    - **Rutas**: Definidas en `reservationRoutes.js`.
@@ -106,10 +107,9 @@ Los servicios encapsulan la lógica relacionada con la interacción con los mode
 
 La carpeta **core** contiene constantes y enumeraciones que son utilizadas a lo largo del proyecto para definir valores clave:
 
-- **const.js**: Define las constantes globales del sistema, incluyendo las rutas de archivos JSON como `userJson` y otras configuraciones clave.
+- **const.js**: Define las constantes globales del sistema.
    - **Ejemplo**: 
      ```javascript
-     export const userJson = '../models/users/users.json';
      export const baseAPI = '/api';
      ```
    
@@ -129,12 +129,12 @@ La carpeta **core** contiene constantes y enumeraciones que son utilizadas a lo 
 
 La carpeta **utils** contiene funciones de utilidad que son utilizadas a lo largo del sistema:
 
-- **function.js**: Define funciones como `leerArchivoJSON`, `escribirArchivoJSON` para manejar archivos JSON, `generarNuevoId` para gestionar IDs correlativos, y `crearFechaUTC` para crear fechas en formato UTC.
+- **function.js**: Define funciones para utilizadas en varios procesos de la aplicación.
+
    - **Ejemplo**: 
      ```javascript
-     export async function leerArchivoJSON(filePath) {
-         const data = await fs.readFile(filePath, 'utf-8');
-         return JSON.parse(data);
+     export function crearFechaUTC(horas, minutos, diasASumar = 0) {
+        //...
      }
      ```
 
@@ -157,18 +157,33 @@ Las vistas renderizan la interfaz de usuario utilizando el motor de plantillas P
 - **reservationConfirmed.pug**: Pantalla de confirmación de reserva.
 - **error.pug**: Pantalla de error para manejar excepciones.
 
+### Nuevas Implementaciones
+
+1. **MongoDB Atlas**:
+   - Los datos de usuarios y reservas se gestionan en la nube con MongoDB Atlas.
+   - Configurado en `src/config/database.js`.
+
+2. **bcrypt**:
+   - Utilizado para encriptar las contraseñas de los usuarios antes de almacenarlas en la base de datos y para la comparativa en el ingreso de usuarios.
+
+3. **JWT (JSON Web Tokens)**:
+   - Autenticación basada en tokens para usuarios.
+   - Implementado en el controlador de usuarios.
+
+4. **Jest**:
+   - Tests unitarios y de integración para verificar la funcionalidad del metodo para crear reservas.
+   - Archivo de configuración: `jest.config.js`.
+
+
 ### Configuración del Proyecto
 
 1. **Dependencias**: 
-   Las dependencias principales están listadas en `package.json`:
-   - **Express**: Framework de Node.js para manejar las rutas y la lógica del servidor.
-   - **Pug**: Motor de plantillas para renderizar las vistas.
-   - **dotenv**: Manejo de variables de entorno.
-
-   Instalar todas las dependencias con:
-   ```bash
-   npm install
-   ```
+   Las dependencias principales están listadas en `package.json`.
+   
+   - **Instalar todas las dependencias**:
+     ```bash
+     npm install
+     ```
 
 2. **Scripts**:
    - **Inicio del servidor**:
@@ -179,18 +194,22 @@ Las vistas renderizan la interfaz de usuario utilizando el motor de plantillas P
      ```bash
      npm run dev
      ```
+   - **Tests**:
+     ```bash
+     npm test
+     ```
 
-### Configuración del Servidor
+### Configuración del Servidor en local
 
-El servidor está configurado en el archivo `app.js`, utilizando **Express**. Las rutas están conectadas y se renderizan vistas mediante **Pug**. El servidor por defecto corre en el puerto `3000`.
+El servidor está configurado en el archivo `app.js`, utilizando **Express**. Las rutas están conectadas y se renderizan vistas mediante **Pug**. El servidor por defecto corre en el puerto `3000` para local. 
 
 El archivo `nodemon.json` está configurado para monitorear cambios en los archivos dentro de la carpeta `src`.
 
 ### Variables de Entorno
 
-El archivo `.env` incluye las variables de entorno que deben ser configuradas para el entorno de desarrollo o producción.
+El archivo `.env` incluye las variables de entorno que tanto para puertos como para la base de datos de MongoDB Atlas.
 
-### Cómo Ejecutar el Proyecto
+### Cómo Ejecutar el Proyecto en Local
 
 1. **Instalar dependencias**:
    ```bash
@@ -210,6 +229,7 @@ El archivo `.env` incluye las variables de entorno que deben ser configuradas pa
 3. **Acceder al proyecto**:
    El servidor estará corriendo en `http://localhost:3000/api`.
 
+
 ### Fuentes:
 
 A continuación, se listan las bibliotecas y herramientas utilizadas en el desarrollo de este proyecto:
@@ -221,7 +241,12 @@ A continuación, se listan las bibliotecas y herramientas utilizadas en el desar
 5. [File System (fs)](https://nodejs.org/api/fs.html): Módulo nativo de Node.js para interactuar con el sistema de archivos.
 6. [Nodemon](https://nodemon.io/): Herramienta para reiniciar el servidor automáticamente en modo desarrollo.
 7. [Luxon](https://moment.github.io/luxon/): Biblioteca para manipulación de fechas y horas.
-8. [JSON](https://www.json.org/json-en.html): Formato de intercambio de datos utilizado para almacenar y transferir información.
-9. [Aprende Node.js y Express - Curso desde Cero](https://www.youtube.com/watch?v=1hpc70_OoAg): Fundamentos de Node.js y Express
+8. [JSON](https://www.json.org/json-en.html): Formato de intercambio de datos utilizado para almacenar y transferir información para la primera entrega.
+9. [Aprende Node.js y Express - Curso desde Cero](https://www.youtube.com/watch?v=1hpc70_OoAg): Fundamentos de Node.js y Express.
+10. [bcrypt] (https://www.npmjs.com/package/bcrypt): Encriptación de contraseñas.
+11. [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken): Generación y verificación de tokens JWT.
+12. [Jest](https://jestjs.io/): Framework de testing en JavaScript.
+13. [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database): Base de datos en la nube.
+14. [Mongoose](https://mongoosejs.com/): ODM para MongoDB.
 
 ---
