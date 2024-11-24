@@ -134,12 +134,8 @@ La carpeta **utils** contiene funciones de utilidad que son utilizadas a lo larg
    - **Ejemplo**: 
      ```javascript
      export function crearFechaUTC(horas, minutos, diasASumar = 0) {
-    const hoy = DateTime.local();
-    const fechaConDias = hoy.plus({ days: diasASumar });
-    const fechaAjustada = fechaConDias.set({ hour: horas, minute: minutos, second: 0, millisecond: 0 });
-    const fechaComoUTC = fechaAjustada.setZone('utc', { keepLocalTime: true });
-    return fechaComoUTC.toISO();
-    }
+        //...
+     }
      ```
 
 ### Rutas
@@ -182,15 +178,12 @@ Las vistas renderizan la interfaz de usuario utilizando el motor de plantillas P
 ### Configuración del Proyecto
 
 1. **Dependencias**: 
-   Las dependencias principales están listadas en `package.json`:
-   - **Express**: Framework de Node.js para manejar las rutas y la lógica del servidor.
-   - **Pug**: Motor de plantillas para renderizar las vistas.
-   - **dotenv**: Manejo de variables de entorno.
-
-   Instalar todas las dependencias con:
-   ```bash
-   npm install
-   ```
+   Las dependencias principales están listadas en `package.json`.
+   
+   - **Instalar todas las dependencias**:
+     ```bash
+     npm install
+     ```
 
 2. **Scripts**:
    - **Inicio del servidor**:
@@ -201,12 +194,12 @@ Las vistas renderizan la interfaz de usuario utilizando el motor de plantillas P
      ```bash
      npm run dev
      ```
-    - **Tests**:
-    ```bash
-    npm test
-    ```
+   - **Tests**:
+     ```bash
+     npm test
+     ```
 
-### Configuración del Servidor
+### Configuración del Servidor en local
 
 El servidor está configurado en el archivo `app.js`, utilizando **Express**. Las rutas están conectadas y se renderizan vistas mediante **Pug**. El servidor por defecto corre en el puerto `3000` para local. 
 
