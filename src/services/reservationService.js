@@ -48,7 +48,7 @@ export async function getReservasPorRolUsuario(username) {
       reservasSelected = await Reservation.find(); // Todas las reservas
     }
 
-    return reservasSelected; // Retornar la nueva reserva
+    return reservasSelected;
   } catch (error) {
     console.error("Error al  obtener las reservas:", error);
     throw error;
@@ -155,8 +155,7 @@ function esEstadoValido(nuevoEstado) {
   return Object.values(ReservationState).includes(nuevoEstado);
 }
 
-
-async function esFechaTurnoValido(fechaDeTurno, numeroMesa) {
+export async function esFechaTurnoValido(fechaDeTurno, numeroMesa) {
   const turnosDisponibles = await getFechaTurnosDisponibles();
  // Buscar el turno en el array de turnos disponibles
  const existeFecha = turnosDisponibles.find(turno => 
