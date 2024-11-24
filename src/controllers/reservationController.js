@@ -88,9 +88,10 @@ export async function actualizarEstadoReserva (req, res) {
 export async function eliminarReserva (req, res) {
     try {
         const reservas = await reservationService.eliminarReservaPorId(req.params.id);
-        if (!reservas || reservas.length === 0) {
+        if (!reservas) {
             return res.status(404).json({ message: `No se encontró la reserva con id: ${req.params.id}` });
         }
+        
         return res.json(reservas);
     } catch (error) {
         console.error("Error en el controlador:", error);
