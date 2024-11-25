@@ -172,6 +172,7 @@ Las vistas renderizan la interfaz de usuario utilizando el motor de plantillas P
 
 4. **Jest**:
    - Tests unitarios y de integración para verificar la funcionalidad del metodo para crear reservas.
+   - MongoMemoryServer se utiliza para emular una base de datos MongoDB en memoria durante los tests, proporcionando un entorno aislado y seguro para pruebas.
    - Archivo de configuración: `jest.config.js`.
 
 
@@ -248,5 +249,7 @@ A continuación, se listan las bibliotecas y herramientas utilizadas en el desar
 12. [Jest](https://jestjs.io/): Framework de testing en JavaScript.
 13. [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database): Base de datos en la nube.
 14. [Mongoose](https://mongoosejs.com/): ODM para MongoDB.
+15. [MongoMemoryServer](https://www.npmjs.com/package/mongodb-memory-server): Base de datos MongoDB en memoria utilizada para tests, evitando interactuar con la base de datos en producción o desarrollo.
+
 
 ---
