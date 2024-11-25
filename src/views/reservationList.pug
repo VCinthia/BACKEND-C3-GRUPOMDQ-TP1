@@ -24,7 +24,7 @@ html
                         - var fechaFormateada = isNaN(fecha.getTime()) ? 'Fecha no disponible' : fecha.toLocaleDateString('es-ES')
                         td= fechaFormateada
                         - var fecha = new Date(reserva.fechaDeTurno)
-                        - var horas = String(fecha.getHours()+3).padStart(2, '0') 
+                        - var horas = String(fecha.getHours()).padStart(2, '0') 
                         - var minutos = String(fecha.getMinutes()).padStart(2, '0') 
                         - var hora = horas + ':' + minutos 
                         td= hora

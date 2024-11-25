@@ -1,10 +1,3 @@
-/*
-// Mockear el servicio completo antes de importar cualquier cosa
-jest.mock('../src/services/reservationService.js', () => ({
-  esFechaTurnoValido: jest.fn(), // Mock de la función esFechaTurnoValido
-}));
-
-*/
 
 import { jest } from '@jest/globals';
 import { MongoMemoryServer } from 'mongodb-memory-server';
