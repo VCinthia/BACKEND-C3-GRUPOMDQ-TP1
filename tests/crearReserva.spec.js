@@ -1,37 +1,32 @@
-
-import { jest } from '@jest/globals';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import Reservation from '../src/models/Reservation.js';
-import User from '../src/models/User.js';
-import { esFechaTurnoValido, crearReserva } from '../src/services/reservationService.js';
-import request from 'supertest';
-import app from '../src/app.js';
+import { crearReserva } from '../src/services/reservationService.js';
+import { crearUsuario } from '../src/services/userService.js';
+import { ReservationMesa, ReservationTurnos } from '../src/core/enums.js';
+
 
 describe('Pruebas para crearReserva', () => {
   let mongoServer;
 
   beforeAll(async () => {
+    console.error = () => {};
     mongoServer = await MongoMemoryServer.create();
     const uri = mongoServer.getUri();
-    if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-    }
+    await mongoose.connect(uri);
 
-
-    // Mock del modelo User
-    jest.mock('../src/models/User.js');
-    User.findOne = jest.fn().mockResolvedValue({
-      username: 'jp', // Simulamos que el usuario existe
+    // Insertar un usuario real en la DB
+    await crearUsuario({
+      nombre: 'Juan',
+      apellido: 'Pérez',
+      username: 'jp',
+      rol: 'Cliente',
+      password: 'juanperez'
     });
   });
 
   afterEach(async () => {
     await Reservation.deleteMany();
-    jest.clearAllMocks(); // Limpia los mocks
   });
 
   afterAll(async () => {
@@ -39,11 +34,9 @@ describe('Pruebas para crearReserva', () => {
     await mongoServer.stop();
   });
 
-
-  //TEST 1:
   it('debería crear una reserva correctamente', async () => {
     const requestBody = {
-      reserva: '4|2024-11-24T20:00:00.000Z',
+      reserva: `${ReservationMesa.CUATRO}|${ReservationTurnos.MANIANA_TURNO_UNO}`,
       nombreCliente: 'Juan Pérez',
       comentario: 'Cena',
       usernameUsuarioCreador: 'jp',
@@ -61,15 +54,12 @@ describe('Pruebas para crearReserva', () => {
     const nuevaReserva = await crearReserva(reservationData);
 
     expect(nuevaReserva).toHaveProperty('_id');
-    expect(nuevaReserva.numMesa).toBe(4);
+    expect(nuevaReserva.numMesa).toBe(parseInt(numMesa, 10));
     expect(nuevaReserva.nombreCliente).toBe('Juan Pérez');
     expect(nuevaReserva.comentario).toBe('Cena');
     expect(nuevaReserva.usernameUsuarioCreador).toBe('jp');
     expect(nuevaReserva.estado).toBe('Pendiente');
   });
-
-
-
 
   //TEST 2:
   it('debería lanzar un error si la fecha no es válida', async () => {
@@ -86,21 +76,24 @@ describe('Pruebas para crearReserva', () => {
       message: `La reserva para la mesa ${reservationData.numMesa} en la fecha ${reservationData.fechaDeTurno} no es válida.`,
     });
   });
-  
-
 
   //TEST 3:
   it('debería lanzar un error si el usuario no existe', async () => {
-    const reservationData = {
-      numMesa: 4,
-      fechaDeTurno: '2024-11-24T20:00:00.000Z',
+    const requestBody = {
+      reserva: `${ReservationMesa.CUATRO}|${ReservationTurnos.MANIANA_TURNO_UNO}`,
       nombreCliente: 'Juan Pérez',
       comentario: 'Cena',
-      usernameUsuarioCreador: 'jp',
+      usernameUsuarioCreador: 'usuarioInexistente',
     };
 
-    // Simulamos que el usuario "noExiste" no está en la base de datos
-    User.findOne.mockResolvedValueOnce(null);  // Simula que el usuario no existe
+    const [numMesa, fechaDeTurno] = requestBody.reserva.split('|');
+    const reservationData = {
+      numMesa: parseInt(numMesa, 10),
+      fechaDeTurno: fechaDeTurno,
+      nombreCliente: requestBody.nombreCliente,
+      comentario: requestBody.comentario,
+      usernameUsuarioCreador: requestBody.usernameUsuarioCreador,
+    };
 
     await expect(crearReserva(reservationData)).rejects.toThrow(
       `El usuario con username ${reservationData.usernameUsuarioCreador} no existe en la base de datos.`
