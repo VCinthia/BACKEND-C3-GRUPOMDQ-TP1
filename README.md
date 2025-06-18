@@ -251,5 +251,14 @@ A continuación, se listan las bibliotecas y herramientas utilizadas en el desar
 14. [Mongoose](https://mongoosejs.com/): ODM para MongoDB.
 15. [MongoMemoryServer](https://www.npmjs.com/package/mongodb-memory-server): Base de datos MongoDB en memoria utilizada para tests, evitando interactuar con la base de datos en producción o desarrollo.
 
-
 ---
+
+## **Dockerización**:
+
+### Ejecutar en local con Docker:
+
+Desde la raíz del proyecto, ejecutar:
+
+```bash
+docker build -t reservas-app .
+docker run -p 3000:3000 --env-file .env reservas-app
